@@ -6,7 +6,7 @@ export default function About() {
             Why <span className="text-green-400">Green IT</span> Matters
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Every year, millions of devices are discarded when they could be repaired. We're changing that by empowering people to fix their own devices.
+            Every year, millions of devices are discarded when they could be repaired. We&apos;re changing that by empowering people to fix their own devices.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
