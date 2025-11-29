@@ -6,7 +6,10 @@ export default function About() {
             Why <span className="text-green-400">Green IT</span> Matters
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Every year, millions of devices are discarded when they could be repaired. We&apos;re changing that by empowering people to fix their own devices.
+            Over 50 million tons of e-waste are produced each year.
+            At the same time, most students can&apos;t afford to replace a device every time something breaks.
+            We believe that learning a few simple repair skills can change both —
+            helping you save money while reducing your environmental impact.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">

@@ -116,7 +116,7 @@ export default function Testimonials() {
             </div>
             <div>
               <textarea
-                placeholder="Share your testimonial about our repair service..."
+                placeholder="Share your testimonial..."
                 value={testimonial}
                 onChange={(e) => setTestimonial(e.target.value)}
                 className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-green-400 h-32 resize-none"

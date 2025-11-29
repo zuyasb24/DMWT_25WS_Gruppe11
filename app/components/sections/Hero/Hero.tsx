@@ -25,7 +25,7 @@ export default function Hero() {
         href="#tutorials"
         className="bg-green-400 hover:bg-green-500 text-black font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300 inline-block"
         >
-        Get started
+        Start repairing
         </a>
       </div>
     </section>
