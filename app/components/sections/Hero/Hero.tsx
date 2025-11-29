@@ -21,9 +21,12 @@ export default function Hero() {
           and reduce e-waste.
         </p>
 
-        <button className="bg-green-400 hover:bg-green-500 text-black font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300">
-          Get started
-        </button>
+        <a
+        href="#tutorials"
+        className="bg-green-400 hover:bg-green-500 text-black font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300 inline-block"
+        >
+        Get started
+        </a>
       </div>
     </section>
   );

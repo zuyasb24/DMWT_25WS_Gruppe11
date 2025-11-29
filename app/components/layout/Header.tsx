@@ -8,6 +8,9 @@ export default function Header() {
 
         {/* Navigation Links */}
         <div className="space-x-8">
+          <a href="#home" className="text-white hover:text-green-400 transition">
+            Home
+          </a>
           <a href="#about" className="text-white hover:text-green-400 transition">
             About
           </a>
