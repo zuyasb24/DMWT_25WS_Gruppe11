@@ -7,9 +7,7 @@
   --cta-bg: #13b789;  /* Background for call-to-action elements */
   --cta-hover: #17cfa5; /* Hover color for call-to-action buttons */
 }
-a {
-  color: var(--accent);
-}
+
 
 body {
   background: #111827;

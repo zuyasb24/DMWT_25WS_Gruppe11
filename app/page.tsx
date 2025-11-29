@@ -1,11 +1,10 @@
 "use client";
-
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Tutorials from "./components/Tutorials";
-import Testimonials from "./components/Testimonials";
-import Footer from "./components/Footer";
+import Header from "@/app/components/Header";
+import Hero from "@/app/components/Hero";
+import About from "@/app/components/About";
+import Tutorials from "@/app/components/Tutorials";
+import Testimonials from "@/app/components/Testimonials";
+import Footer from "@/app/components/Footer";
 
 export default function Home() {
   return (
@@ -21,4 +20,3 @@ export default function Home() {
     </div>
   );
 }
-//update

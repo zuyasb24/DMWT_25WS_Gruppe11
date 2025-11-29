@@ -1,15 +1,25 @@
 export default function Header() {
-    return (
-      <header className="w-full bg-gray-900 border-b border-gray-800 fixed top-0 left-0 z-50">
-        <nav className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-          <span className="text-green-400 text-2xl font-bold">Green IT Repair</span>
-          <div className="space-x-6">
-            <a href="#about" className="text-gray-300 hover:text-green-400">About</a>
-            <a href="#tutorials" className="text-gray-300 hover:text-green-400">Tutorials</a>
-            <a href="#testimonials" className="text-gray-300 hover:text-green-400">Testimonials</a>
-          </div>
-        </nav>
-      </header>
-    );
-  }
-  
+  return (
+    <header className="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
+      <nav className="w-full max-w-6xl mx-auto px-10 py-4 flex justify-between items-center">
+
+        {/* Logo */}
+        <span className="text-white text-2xl font-bold">Green IT Repair</span>
+
+        {/* Navigation Links */}
+        <div className="space-x-8">
+          <a href="#about" className="text-white hover:text-green-400 transition">
+            About
+          </a>
+          <a href="#tutorials" className="text-white hover:text-green-400 transition">
+            Tutorials
+          </a>
+          <a href="#testimonials" className="text-white hover:text-green-400 transition">
+            Testimonials
+          </a>
+        </div>
+
+      </nav>
+    </header>
+  );
+}

@@ -1,15 +1,28 @@
 export default function Hero() {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-24 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-white mb-6">
-          Repair, Don&apos;t <span className="text-green-400">Replace</span>
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center bg-cover bg-center bg-no-repeat pl-20 pr-10"
+      style={{ backgroundImage: "url('/hero-background.png')" }}
+    >
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/25"></div>
+
+      {/* Left-aligned content */}
+      <div className="relative z-10 max-w-2xl">
+        <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
+          Save the planet,
+          <br />
+          one <span className="text-green-400">repair</span> at a time.
         </h1>
-        <p className="text-xl text-gray-300 mb-8 max-w-xl mx-auto">
-          Join the Green IT revolution. Learn to fix your devices, reduce e-waste, and save money with our DIY repair tutorials.
+
+        <p className="text-xl text-gray-200 mb-8 max-w-xl">
+          Learn practical repair guides that extend your device’s life  
+          and reduce e-waste.
         </p>
+
         <button className="bg-green-400 hover:bg-green-500 text-black font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300">
-          Start Learning Today
+          Get started
         </button>
       </div>
     </section>
