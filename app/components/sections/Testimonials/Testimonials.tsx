@@ -27,11 +27,10 @@ export default function Testimonials() {
         if (!res.ok) {
           throw new Error("Failed to fetch testimonials");
         }
-        const data = await res.json() as Testimonial[];
+        const data = (await res.json()) as Testimonial[];
         if (Array.isArray(data)) {
           setTestimonials(data);
         } else {
-          console.error("Data is not an array:", data);
           setTestimonials([]);
         }
       } catch (error) {
@@ -48,6 +47,7 @@ export default function Testimonials() {
 
     setLoading(true);
     setError("");
+
     try {
       const res = await fetch("/api/testimonials", {
         method: "POST",
@@ -62,7 +62,7 @@ export default function Testimonials() {
         setRating(5);
 
         const updated = await fetch("/api/testimonials");
-        const data = await updated.json() as Testimonial[];
+        const data = (await updated.json()) as Testimonial[];
         if (Array.isArray(data)) {
           setTestimonials(data);
         } else {
@@ -82,18 +82,27 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="py-20 bg-gray-900">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center text-white mb-12">
-          What Our <span className="text-green-400">Community</span> Says
+
+        {/* Main Heading */}
+        <h2 className="text-4xl font-bold text-center text-white mb-4">
+          What <span className="text-green-400">People</span> Are Saying
         </h2>
+
+        {/* Optional intro line */}
+        <p className="text-center text-gray-400 max-w-2xl mx-auto mb-12">
+          Real stories from people learning how to repair their devices and save money.
+        </p>
 
         {/* Testimonial Form */}
         <div className="max-w-2xl mx-auto mb-16 bg-gray-800 rounded-lg p-8 border border-gray-700">
-          <h3 className="text-2xl font-bold text-white mb-6">Share Your Testimonial</h3>
+          <h3 className="text-2xl font-bold text-white mb-6">Tell Us What You Think</h3>
+
           {error && (
             <div className="mb-4 p-3 bg-red-600 text-white rounded-lg">
               {error}
             </div>
           )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <input
@@ -105,6 +114,7 @@ export default function Testimonials() {
                 required
               />
             </div>
+
             <div>
               <input
                 type="text"
@@ -114,15 +124,17 @@ export default function Testimonials() {
                 className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-green-400"
               />
             </div>
+
             <div>
               <textarea
-                placeholder="Share your testimonial..."
+                placeholder="Share your thoughts..."
                 value={testimonial}
                 onChange={(e) => setTestimonial(e.target.value)}
                 className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-green-400 h-32 resize-none"
                 required
               />
             </div>
+
             <div className="flex items-center gap-2">
               <span className="text-white font-semibold">Rating:</span>
               {[1, 2, 3, 4, 5].map((star) => (
@@ -138,6 +150,7 @@ export default function Testimonials() {
                 </button>
               ))}
             </div>
+
             <button
               type="submit"
               disabled={loading}
@@ -160,35 +173,32 @@ export default function Testimonials() {
                 key={t.id}
                 className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-green-400 transition-all duration-300 relative"
               >
-                {/* Quotation Mark */}
+                {/* Quote mark */}
                 <div className="text-green-400 text-6xl font-serif absolute top-4 right-4 opacity-20">
                   &quot;
                 </div>
 
-                {/* Profile Section */}
+                {/* Profile */}
                 <div className="flex items-center gap-4 mb-4 relative z-10">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-bold text-xl">
                     {t.name.charAt(0).toUpperCase()}
                   </div>
                   <div>
                     <h4 className="text-white font-semibold">{t.name}</h4>
-                    <p className="text-gray-400 text-sm">{t.role || "Community Member"}</p>
+                    <p className="text-gray-400 text-sm">{t.role || "User"}</p>
                   </div>
                 </div>
 
                 {/* Star Rating */}
                 <div className="flex gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      className={i < (t.rating || 5) ? "text-yellow-400" : "text-gray-600"}
-                    >
+                    <span key={i} className={i < t.rating ? "text-yellow-400" : "text-gray-600"}>
                       ★
                     </span>
                   ))}
                 </div>
 
-                {/* Testimonial Text */}
+                {/* Testimonial */}
                 <p className="text-gray-300 relative z-10 leading-relaxed">
                   &quot;{t.testimonial}&quot;
                 </p>
@@ -200,4 +210,3 @@ export default function Testimonials() {
     </section>
   );
 }
-//updated
