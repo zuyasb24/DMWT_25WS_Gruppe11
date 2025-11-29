@@ -22,7 +22,7 @@ export default function About() {
             </div>
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
               <div className="text-3xl font-bold text-green-400 mb-2">100K+</div>
-              <div className="text-gray-300">Community Members</div>
+              <div className="text-gray-300">Successful Repairs</div>
             </div>
           </div>
         </div>
