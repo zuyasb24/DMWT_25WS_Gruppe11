@@ -1,3 +1,5 @@
+import Button from "../../ui/Button";
+
 export default function Hero() {
   return (
     <section
@@ -20,12 +22,10 @@ export default function Hero() {
           Learn practical repair guides that extend your device’s life and reduce e-waste.
         </p>
 
-        <a
-          href="#tutorials"
-          className="bg-green-400 hover:bg-green-500 text-black font-semibold px-6 md:px-8 py-3 md:py-4 rounded-lg text-lg transition-all duration-300 inline-block"
-        >
+        {/* ✅ CTA using shared Button component */}
+        <Button href="#tutorials">
           Start repairing
-        </a>
+        </Button>
       </div>
     </section>
   );
