@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Header() {
@@ -17,10 +18,10 @@ export default function Header() {
         <div className="flex items-center gap-6 ml-auto">
           {/* Navigation Links */}
           <div className="flex gap-4 md:gap-8">
-            <a href="/#home" className="text-white hover:text-green-400 transition">Home</a>
-            <a href="/#about" className="text-white hover:text-green-400 transition">About</a>
-            <a href="/#tutorials" className="text-white hover:text-green-400 transition">Tutorials</a>
-            <a href="/#forum" className="text-white hover:text-green-400 transition">Forum</a>
+            <Link href="/#home" className="text-white hover:text-green-400 transition">Home</Link>
+            <Link href="/#about" className="text-white hover:text-green-400 transition">About</Link>
+            <Link href="/#tutorials" className="text-white hover:text-green-400 transition">Tutorials</Link>
+            <Link href="/#forum" className="text-white hover:text-green-400 transition">Forum</Link>
           </div>
 
           {/* Login / Logout */}

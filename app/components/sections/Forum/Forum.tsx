@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MessageCircle, ThumbsUp, User } from "lucide-react";
+import { MessageCircle, ThumbsUp } from "lucide-react";
 type Question = {
   id: number;
   name: string;
