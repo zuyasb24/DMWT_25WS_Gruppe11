@@ -8,6 +8,11 @@
   --cta-hover: #17cfa5; /* Hover color for call-to-action buttons */
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 
 body {
   background: #111827;
