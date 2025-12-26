@@ -23,8 +23,13 @@ const { handlers } = NextAuth({
       },
     }),
   ],
-  session: { strategy: "jwt" as const },
+
+   pages: {
+    signIn: "/login",
+  },
   
+  session: { strategy: "jwt" as const },
+
 });
 
 export const { GET, POST } = handlers;
