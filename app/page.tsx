@@ -3,7 +3,7 @@ import Header from "@/app/components/layout/Header";
 import Hero from "@/app/components/sections/Hero/Hero";
 import About from "@/app/components/sections/About/About";
 import Tutorials from "@/app/components/sections/Tutorials/Tutorials";
-import Testimonials from "@/app/components/sections/Testimonials/Testimonials";
+import Forum from "@/app/components/sections/Forum/Forum";
 import Footer from "@/app/components/layout/Footer";
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
         <Hero />
         <About />
         <Tutorials />
-        <Testimonials />
+        <Forum />
       </main>
       <Footer />
     </div>
