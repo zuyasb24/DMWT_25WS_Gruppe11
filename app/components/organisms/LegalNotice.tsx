@@ -2,38 +2,68 @@
 
 export default function LegalNotice() {
   return (
-    <section
-      id="legalnotice"
-      className="w-full py-10 flex justify-center"
-    >
-      <div className="max-w-3xl w-full text-center" style={{ fontFamily: "Inter, sans-serif" }}>
-        <h2 className="text-2xl font-bold mb-4 text-white">Legal Notice</h2>
+    <section className="w-full px-6 py-16 flex justify-center">
+      <div className="max-w-3xl w-full space-y-10">
+        {/* Page title */}
+        <header className="text-center">
+          <h1 className="text-3xl font-semibold text-white">
+            Legal <span className="text-green-400">Notice</span>
+          </h1>
+          <p className="mt-3 text-white/70">
+            Transparency and responsibility are part of our Green IT mission.
+          </p>
+        </header>
 
-        <p className="mb-6 text-slate-300">
-          This section provides legal information about Green IT Repair and how to contact us.
-        </p>
-
-        <div className="space-y-4 text-slate-200 text-sm">
-          <div>
-            <h3 className="font-semibold">Company Information</h3>
-            <p>Green IT Repair</p>
-            <p>Recycling Street 12</p>
-            <p>70599 Stuttgart, Germany</p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold">Contact</h3>
-            <p>Email: contact@greenit-repair.example</p>
-            <p>Website: www.greenit-repair.example</p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold">Responsibility for Content</h3>
-            <p className="text-slate-300">
-              Green IT Repair is responsible for the content provided on this website. The information is intended
-              for general guidance on sustainable device repair and reuse.
+        {/* Content box */}
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-8 space-y-8">
+          {/* Company */}
+          <section>
+            <h2 className="text-lg font-semibold text-green-400 mb-2">
+              Company Information
+            </h2>
+            <p className="text-white/80 leading-relaxed">
+              <strong className="text-white">Green IT Repair</strong>
+              <br />
+              Recycling Street 12
+              <br />
+              70599 Stuttgart
+              <br />
+              Germany
             </p>
-          </div>
+          </section>
+
+          {/* Contact */}
+          <section id="contact">
+            <h2 className="text-lg font-semibold text-green-400 mb-2">
+              Contact
+            </h2>
+            <p className="text-white/80 leading-relaxed">
+              Email:{" "}
+              <a
+                href="mailto:contact@greenit-repair.example"
+                className="text-green-400 hover:underline"
+              >
+                contact@greenit-repair.example
+              </a>
+              <br />
+              Website:{" "}
+              <span className="text-white">
+                www.greenit-repair.example
+              </span>
+            </p>
+          </section>
+
+          {/* Responsibility */}
+          <section>
+            <h2 className="text-lg font-semibold text-green-400 mb-2">
+              Responsibility for Content
+            </h2>
+            <p className="text-white/70 leading-relaxed">
+              The content of this website is provided for informational purposes
+              only. Green IT Repair aims to promote sustainable device repair,
+              reuse and responsible recycling practices.
+            </p>
+          </section>
         </div>
       </div>
     </section>
