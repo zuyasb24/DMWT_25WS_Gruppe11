@@ -1,10 +1,10 @@
 "use client";
 
-import Hero from "@/app/components/sections/Hero/Hero";
-import About from "@/app/components/sections/About/About";
-import Tutorials from "@/app/components/sections/Tutorials/Tutorials";
-import Forum from "@/app/components/sections/Forum/Forum";
-
+import Hero from "@/app/components/organisms/Hero";
+import About from "@/app/components/organisms/About";
+import Tutorials from "@/app/components/organisms/Tutorials";
+import Forum from "@/app/components/organisms/Forum";
+import Infographic from "@/app/components/organisms/Infographic";
 
 export default function Home() {
   return (
@@ -13,6 +13,7 @@ export default function Home() {
       <main>
         <Hero />
         <About />
+        <Infographic />
         <Tutorials />
         <Forum />
       </main>

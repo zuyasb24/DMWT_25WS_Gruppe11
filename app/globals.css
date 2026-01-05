@@ -1,25 +1,71 @@
 @import "tailwindcss";
 
+/* CSS variables (design tokens) */
 :root {
-  /*color for buttons/elements*/
-  --accent: #01d182; /* for buttons, links, etc. */
-  --box-bg: #4ec0cf; /* Background color for content boxes/cards */
-  --cta-bg: #13b789;  /* Background for call-to-action elements */
-  --cta-hover: #17cfa5; /* Hover color for call-to-action buttons */
+  /* colors for buttons / UI elements */
+  --accent: #01d182;
+  --box-bg: #4ec0cf;
+  --cta-bg: #13b789;
+  --cta-hover: #17cfa5;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
+/* Base styles */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: #111827;
-  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  color: #fff;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
+/* =========================
+   Animations (Infographic)
+   ========================= */
+
+/* Subtle breathing animation for active device */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+.device-active {
+  animation: breathe 2.2s ease-in-out infinite;
+}
+
+/* Dark overlay background */
+.overlay-dark {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* Shake animation on first interaction */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.shake-once {
+  animation: shake 0.4s ease-in-out;
 }
