@@ -224,7 +224,7 @@ export default function Infographic() {
                   </ActionButton>
 
                   <ActionButton onClick={() => setShowSustainableMessage(true)}>
-                    I won&apos;t repair it
+                    Throw it away
                   </ActionButton>
                 </div>
               </>
@@ -236,7 +236,7 @@ export default function Infographic() {
 
                 <p className="text-slate-200 mb-6 leading-relaxed text-lg">
                   By sending your device to us, you help reduce electronic waste.
-                  We repair, reuse or recycle devices responsibly — giving
+                  We repair, reuse or recycle devices responsibly, giving
                   technology a second life.
                 </p>
 
