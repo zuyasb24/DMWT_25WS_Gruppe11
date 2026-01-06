@@ -235,7 +235,7 @@ export default function Infographic() {
                 </h2>
 
                 <p className="text-slate-200 mb-6 leading-relaxed text-lg">
-                  By sending your device to us, you help reduce electronic waste.
+                  Send your device to us to help reduce electronic waste!
                   We repair, reuse or recycle devices responsibly, giving
                   technology a second life.
                 </p>

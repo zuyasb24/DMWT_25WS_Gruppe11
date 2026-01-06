@@ -162,7 +162,7 @@ export default function Forum() {
   }
 
   return (
-    <section id="forum" className="py-20 bg-gray-900">
+    <section id="forum" className="py-20">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-white mb-4">
           Community <span className="text-green-400">Forum</span>
