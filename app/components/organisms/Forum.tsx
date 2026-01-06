@@ -193,7 +193,7 @@ export default function Forum() {
               placeholder="Optional: Your Role (e.g., Student, Creator)"
               value={qRole}
               onChange={(e) => setQRole(e.target.value)}
-              className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-green-400"
+              className="w-full p-3 pl-10 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-green-400"
             />
 
             <textarea
