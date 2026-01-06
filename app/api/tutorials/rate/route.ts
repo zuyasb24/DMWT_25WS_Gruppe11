@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/app/lib/auth";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   }
 
 
-  const userId = Number((session.user as any).id);
+  const userId = Number((session.user as { id?: string }).id);
   if (!Number.isFinite(userId)) {
     return NextResponse.json({ error: "User id missing in session" }, { status: 500 });
   }
