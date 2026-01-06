@@ -5,6 +5,7 @@ import About from "@/app/components/organisms/About";
 import Tutorials from "@/app/components/organisms/Tutorials";
 import Forum from "@/app/components/organisms/Forum";
 import Infographic from "@/app/components/organisms/Infographic";
+import CreatorCTASection from "./components/organisms/CreatorCTASection";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Infographic />
         <Tutorials />
         <Forum />
+        <CreatorCTASection />
       </main>
       
     </div>
