@@ -4,8 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Play, Clock, Search } from "lucide-react";
 import InteractiveRating from "../atoms/InteractiveRating";
-
-type Difficulty = "Beginner" | "Intermediate" | "Advanced";
+import DifficultyBadge, { type Difficulty } from "../molecules/DifficultyBadge";
 type Category = "Smartphone" | "Laptop" | "Tablet" | "Audio";
 
 type Tutorial = {
@@ -96,19 +95,6 @@ function extractYouTubeId(url: string) {
     if (embedIndex !== -1 && parts[embedIndex + 1]) return parts[embedIndex + 1];
   } catch {}
   return "";
-}
-
-function getDifficultyColor(difficulty: Difficulty) {
-  switch (difficulty) {
-    case "Beginner":
-      return "text-green-400 bg-green-400/10";
-    case "Intermediate":
-      return "text-yellow-400 bg-yellow-400/10";
-    case "Advanced":
-      return "text-red-400 bg-red-400/10";
-    default:
-      return "text-gray-400 bg-gray-400/10";
-  }
 }
 
 export default function Tutorials() {
@@ -295,13 +281,7 @@ export default function Tutorials() {
                       />
                     </div>
 
-                    <span
-                      className={`px-2 py-1 rounded text-xs font-medium ${getDifficultyColor(
-                        tutorial.difficulty
-                      )}`}
-                    >
-                      {tutorial.difficulty}
-                    </span>
+                    <DifficultyBadge difficulty={tutorial.difficulty} />
                   </div>
 
                   <a
