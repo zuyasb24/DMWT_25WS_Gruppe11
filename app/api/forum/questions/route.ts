@@ -26,15 +26,27 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { name, role, question } = await req.json();
+    //Require login
+    const { auth } = await import("@/app/lib/auth"); // adjust if your auth helper path differs
+    const session = await auth();
 
-    if (!name || !question) {
-      return NextResponse.json({ error: "name and question are required" }, { status: 400 });
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { role, question } = await req.json();
+
+    const name = String(session.user.name ?? session.user.email ?? "User");
+    const safeRole = role ? String(role) : null;
+    const safeQuestion = String(question ?? "").trim();
+
+    if (!safeQuestion) {
+      return NextResponse.json({ error: "question is required" }, { status: 400 });
     }
 
     const result = await sql`
       INSERT INTO forum_questions (name, role, question)
-      VALUES (${name}, ${role ?? null}, ${question})
+      VALUES (${name}, ${safeRole}, ${safeQuestion})
       RETURNING id, name, role, question, likes, created_at;
     `;
 

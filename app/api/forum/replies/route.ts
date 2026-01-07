@@ -28,18 +28,31 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { questionId, name, role, reply } = await req.json();
+    // Require login
+    const { auth } = await import("@/app/lib/auth"); // adjust if your auth helper path differs
+    const session = await auth();
 
-    if (!questionId || !name || !reply) {
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { questionId, role, reply } = await req.json();
+
+    const name = String(session.user.name ?? session.user.email ?? "User");
+    const safeRole = role ? String(role) : null;
+    const safeReply = String(reply ?? "").trim();
+    const qid = Number(questionId);
+
+    if (!Number.isFinite(qid) || !safeReply) {
       return NextResponse.json(
-        { error: "questionId, name and reply are required" },
+        { error: "questionId and reply are required" },
         { status: 400 }
       );
     }
 
     const result = await sql`
       INSERT INTO forum_replies (question_id, name, role, reply)
-      VALUES (${Number(questionId)}, ${name}, ${role ?? null}, ${reply})
+      VALUES (${qid}, ${name}, ${safeRole}, ${safeReply})
       RETURNING id, question_id, name, role, reply, created_at;
     `;
 

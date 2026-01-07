@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { MessageCircle, ThumbsUp } from "lucide-react";
+import { useSession } from "next-auth/react";
+
 type Question = {
   id: number;
   name: string;
@@ -23,21 +25,21 @@ type Reply = {
 };
 
 export default function Forum() {
+  const { data: session, status } = useSession();
+  const isAuthed = status === "authenticated";
+
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Ask a Question form
-  const [qName, setQName] = useState("");
+  // Ask a Question form (NO name — we use session username)
   const [qRole, setQRole] = useState("");
   const [qText, setQText] = useState("");
 
   // Replies state (loaded per question)
   const [openQuestionId, setOpenQuestionId] = useState<number | null>(null);
   const [repliesByQ, setRepliesByQ] = useState<Record<number, Reply[]>>({});
-  const [replyDraftByQ, setReplyDraftByQ] = useState<Record<number, { name: string; role: string; reply: string }>>(
-    {}
-  );
+  const [replyDraftByQ, setReplyDraftByQ] = useState<Record<number, { role: string; reply: string }>>({});
 
   async function loadQuestions() {
     try {
@@ -59,18 +61,21 @@ export default function Forum() {
     e.preventDefault();
     setError("");
 
-    const name = qName.trim();
+    if (!isAuthed) {
+      setError("Please log in to post a question.");
+      return;
+    }
+
     const role = qRole.trim();
     const question = qText.trim();
-
-    if (!name || !question) return;
+    if (!question) return;
 
     setLoading(true);
     try {
       const res = await fetch("/api/forum/questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, role, question }),
+        body: JSON.stringify({ role, question }),
       });
 
       if (!res.ok) {
@@ -78,10 +83,8 @@ export default function Forum() {
         return;
       }
 
-      setQName("");
       setQRole("");
       setQText("");
-
       await loadQuestions();
     } catch (e) {
       console.error(e);
@@ -116,20 +119,24 @@ export default function Forum() {
     // init reply draft if missing
     setReplyDraftByQ((prev) => ({
       ...prev,
-      [questionId]: prev[questionId] ?? { name: "", role: "", reply: "" },
+      [questionId]: prev[questionId] ?? { role: "", reply: "" },
     }));
   }
 
   async function submitReply(questionId: number) {
     setError("");
 
-    const draft = replyDraftByQ[questionId] ?? { name: "", role: "", reply: "" };
-    const name = draft.name.trim();
+    if (!isAuthed) {
+      setError("Please log in to reply.");
+      return;
+    }
+
+    const draft = replyDraftByQ[questionId] ?? { role: "", reply: "" };
     const role = draft.role.trim();
     const reply = draft.reply.trim();
 
-    if (!name || !reply) {
-      setError("Reply needs a name and text.");
+    if (!reply) {
+      setError("Reply needs text.");
       return;
     }
 
@@ -137,7 +144,7 @@ export default function Forum() {
       const res = await fetch("/api/forum/replies", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId, name, role, reply }),
+        body: JSON.stringify({ questionId, role, reply }),
       });
 
       if (!res.ok) {
@@ -149,17 +156,21 @@ export default function Forum() {
       const refreshed = await fetch(`/api/forum/replies?questionId=${questionId}`, { cache: "no-store" });
       const data = (await refreshed.json()) as Reply[];
       setRepliesByQ((prev) => ({ ...prev, [questionId]: Array.isArray(data) ? data : [] }));
+
       await loadQuestions();
+
       // clear reply box
       setReplyDraftByQ((prev) => ({
         ...prev,
-        [questionId]: { name: "", role: "", reply: "" },
+        [questionId]: { role: "", reply: "" },
       }));
     } catch (e) {
       console.error(e);
       setError("Error posting reply");
     }
   }
+
+  const displayName = isAuthed ? String(session?.user?.name ?? session?.user?.email ?? "User") : "";
 
   return (
     <section id="forum" className="py-20">
@@ -174,42 +185,52 @@ export default function Forum() {
 
         {/* Ask a Question */}
         <div className="max-w-7xl mx-auto mb-16 bg-gray-800 rounded-lg p-8 border border-gray-700">
-          <h3 className="text-2xl font-bold text-white mb-6">Ask a Question</h3>
+          <h3 className="text-2xl font-bold text-white mb-2">Ask a Question</h3>
+
+          {/* Only show who is posting if logged in */}
+          {isAuthed && (
+            <p className="text-sm text-gray-400 mb-4">
+              Posting as: <span className="text-gray-200 font-medium">{displayName}</span>
+            </p>
+          )}
 
           {error && <div className="mb-4 p-3 bg-red-600 text-white rounded-lg">{error}</div>}
 
-          <form onSubmit={handleSubmitQuestion} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Your Name"
-              value={qName}
-              onChange={(e) => setQName(e.target.value)}
-              className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-green-400"
-              required
-            />
+          {!isAuthed && (
+            <div className="mb-4 p-3 bg-gray-900 text-white rounded-lg border border-gray-700">
+              Please{" "}
+              <a href="/login" className="text-green-400 hover:text-green-300 underline">
+                log in
+              </a>{" "}
+              to post a question.
+            </div>
+          )}
 
+          <form onSubmit={handleSubmitQuestion} className="space-y-4">
             <input
               type="text"
               placeholder="Optional: Your Role (e.g., Student, Creator)"
               value={qRole}
               onChange={(e) => setQRole(e.target.value)}
-              className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-green-400"
+              disabled={!isAuthed || loading}
+              className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-green-400 disabled:opacity-60 disabled:cursor-not-allowed"
             />
 
             <textarea
               placeholder="Describe your repair question..."
               value={qText}
               onChange={(e) => setQText(e.target.value)}
-              className="w-full p-4 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-green-400 h-32 resize-none"
+              disabled={!isAuthed || loading}
+              className="w-full p-4 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-green-400 h-32 resize-none disabled:opacity-60 disabled:cursor-not-allowed"
               required
             />
 
             <button
               type="submit"
-              disabled={loading}
-              className="w-full bg-green-400 hover:bg-green-500 disabled:bg-gray-500 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+              disabled={loading || !isAuthed}
+              className="w-full bg-green-400 hover:bg-green-500 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300 disabled:bg-gray-600 disabled:text-gray-300 disabled:cursor-not-allowed"
             >
-              {loading ? "Posting..." : "Post Question"}
+              Post Question
             </button>
           </form>
         </div>
@@ -222,7 +243,7 @@ export default function Forum() {
             questions.map((q) => {
               const isOpen = openQuestionId === q.id;
               const replies = repliesByQ[q.id] ?? [];
-              const draft = replyDraftByQ[q.id] ?? { name: "", role: "", reply: "" };
+              const draft = replyDraftByQ[q.id] ?? { role: "", reply: "" };
 
               return (
                 <div
@@ -243,12 +264,14 @@ export default function Forum() {
                       </div>
 
                       <p className="text-gray-200 mt-3 leading-relaxed">{q.question}</p>
+
                       <div className="flex items-center gap-4 text-sm text-gray-400 mt-4">
                         <div className="flex items-center gap-1">
                           <ThumbsUp className="h-4 w-4" />
                           <span>{q.likes}</span>
                         </div>
 
+                        {/* Replies toggle is HERE (next to likes) */}
                         <button
                           type="button"
                           onClick={() => toggleOpen(q.id)}
@@ -257,11 +280,10 @@ export default function Forum() {
                           aria-controls={`replies-${q.id}`}
                         >
                           <MessageCircle className="h-4 w-4" />
-                          <span>
-                            {isOpen ? "Hide replies" : `${q.replies_count} replies`}
-                          </span>
+                          <span>{isOpen ? "Hide replies" : `${q.replies_count} replies`}</span>
                         </button>
                       </div>
+
                       {isOpen && (
                         <div id={`replies-${q.id}`} className="mt-6 border-t border-gray-700 pt-5">
                           {/* Replies list */}
@@ -285,22 +307,26 @@ export default function Forum() {
 
                           {/* Reply form */}
                           <div className="mt-6 bg-gray-900/40 border border-gray-700 rounded-lg p-4">
-                            <p className="text-white font-semibold mb-3">Write a reply</p>
+                            <p className="text-white font-semibold mb-2">Write a reply</p>
+
+                            {/* Only show who is replying if logged in */}
+                            {isAuthed && (
+                              <p className="text-sm text-gray-400 mb-3">
+                                Replying as: <span className="text-gray-200 font-medium">{displayName}</span>
+                              </p>
+                            )}
+
+                            {!isAuthed && (
+                              <div className="mb-3 p-3 bg-gray-900 text-white rounded-lg border border-gray-700">
+                                Please{" "}
+                                <a href="/login" className="text-green-400 hover:text-green-300 underline">
+                                  log in
+                                </a>{" "}
+                                to reply.
+                              </div>
+                            )}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                              <input
-                                type="text"
-                                placeholder="Your Name"
-                                value={draft.name}
-                                onChange={(e) =>
-                                  setReplyDraftByQ((prev) => ({
-                                    ...prev,
-                                    [q.id]: { ...draft, name: e.target.value },
-                                  }))
-                                }
-                                className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-green-400"
-                              />
-
                               <input
                                 type="text"
                                 placeholder="Optional: Your Role"
@@ -311,7 +337,8 @@ export default function Forum() {
                                     [q.id]: { ...draft, role: e.target.value },
                                   }))
                                 }
-                                className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-green-400"
+                                disabled={!isAuthed}
+                                className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-green-400 disabled:opacity-60 disabled:cursor-not-allowed"
                               />
                             </div>
 
@@ -324,13 +351,15 @@ export default function Forum() {
                                   [q.id]: { ...draft, reply: e.target.value },
                                 }))
                               }
-                              className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-green-400 h-28 resize-none"
+                              disabled={!isAuthed}
+                              className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-green-400 h-28 resize-none disabled:opacity-60 disabled:cursor-not-allowed"
                             />
 
                             <button
                               type="button"
                               onClick={() => submitReply(q.id)}
-                              className="mt-3 bg-green-400 hover:bg-green-500 text-black font-semibold px-5 py-2 rounded-lg transition-all duration-300"
+                              disabled={!isAuthed}
+                              className="mt-3 bg-green-400 hover:bg-green-500 text-black font-semibold px-5 py-2 rounded-lg transition-all duration-300 disabled:bg-gray-600 disabled:text-gray-300 disabled:cursor-not-allowed"
                             >
                               Post Reply
                             </button>
