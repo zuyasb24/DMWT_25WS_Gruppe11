@@ -9,7 +9,7 @@ type Question = {
   name: string;
   role?: string | null;
   question: string;
-  likes: number;
+  likes: number; // (kept in DB, but we don't display it anymore)
   replies_count: number;
   created_at?: string;
 };
@@ -39,7 +39,13 @@ export default function Forum() {
   // Replies state (loaded per question)
   const [openQuestionId, setOpenQuestionId] = useState<number | null>(null);
   const [repliesByQ, setRepliesByQ] = useState<Record<number, Reply[]>>({});
-  const [replyDraftByQ, setReplyDraftByQ] = useState<Record<number, { role: string; reply: string }>>({});
+  const [replyDraftByQ, setReplyDraftByQ] = useState<
+    Record<number, { role: string; reply: string }>
+  >({});
+
+  const displayName = isAuthed
+    ? String(session?.user?.name ?? session?.user?.email ?? "User")
+    : "";
 
   async function loadQuestions() {
     try {
@@ -106,10 +112,15 @@ export default function Forum() {
     // load replies if not loaded yet
     if (!repliesByQ[questionId]) {
       try {
-        const res = await fetch(`/api/forum/replies?questionId=${questionId}`, { cache: "no-store" });
+        const res = await fetch(`/api/forum/replies?questionId=${questionId}`, {
+          cache: "no-store",
+        });
         if (!res.ok) throw new Error("Failed to fetch replies");
         const data = (await res.json()) as Reply[];
-        setRepliesByQ((prev) => ({ ...prev, [questionId]: Array.isArray(data) ? data : [] }));
+        setRepliesByQ((prev) => ({
+          ...prev,
+          [questionId]: Array.isArray(data) ? data : [],
+        }));
       } catch (e) {
         console.error(e);
         setRepliesByQ((prev) => ({ ...prev, [questionId]: [] }));
@@ -153,9 +164,15 @@ export default function Forum() {
       }
 
       // reload replies for that question
-      const refreshed = await fetch(`/api/forum/replies?questionId=${questionId}`, { cache: "no-store" });
+      const refreshed = await fetch(
+        `/api/forum/replies?questionId=${questionId}`,
+        { cache: "no-store" }
+      );
       const data = (await refreshed.json()) as Reply[];
-      setRepliesByQ((prev) => ({ ...prev, [questionId]: Array.isArray(data) ? data : [] }));
+      setRepliesByQ((prev) => ({
+        ...prev,
+        [questionId]: Array.isArray(data) ? data : [],
+      }));
 
       await loadQuestions();
 
@@ -170,7 +187,65 @@ export default function Forum() {
     }
   }
 
-  const displayName = isAuthed ? String(session?.user?.name ?? session?.user?.email ?? "User") : "";
+  // Like a reply (ONLY replies have likes now)
+  async function likeReply(questionId: number, replyId: number) {
+    setError("");
+
+    if (!isAuthed) {
+      setError("Please log in to like replies.");
+      return;
+    }
+
+    // Optimistic UI update (instant feedback)
+    setRepliesByQ((prev) => {
+      const current = prev[questionId] ?? [];
+      return {
+        ...prev,
+        [questionId]: current.map((r) =>
+          r.id === replyId ? { ...r, likes: (r.likes ?? 0) + 1 } : r
+        ),
+      };
+    });
+
+    try {
+      const res = await fetch("/api/forum/replies/like", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ replyId }),
+      });
+
+      if (!res.ok) {
+        // rollback by refetching replies (safe)
+        const refreshed = await fetch(
+          `/api/forum/replies?questionId=${questionId}`,
+          { cache: "no-store" }
+        );
+        const data = (await refreshed.json()) as Reply[];
+        setRepliesByQ((prev) => ({
+          ...prev,
+          [questionId]: Array.isArray(data) ? data : [],
+        }));
+        setError("Failed to like reply");
+        return;
+      }
+
+      const data = (await res.json()) as { likes: number };
+
+      // Sync with server count
+      setRepliesByQ((prev) => {
+        const current = prev[questionId] ?? [];
+        return {
+          ...prev,
+          [questionId]: current.map((r) =>
+            r.id === replyId ? { ...r, likes: data.likes } : r
+          ),
+        };
+      });
+    } catch (e) {
+      console.error(e);
+      setError("Error liking reply");
+    }
+  }
 
   return (
     <section id="forum" className="py-20">
@@ -190,16 +265,24 @@ export default function Forum() {
           {/* Only show who is posting if logged in */}
           {isAuthed && (
             <p className="text-sm text-gray-400 mb-4">
-              Posting as: <span className="text-gray-200 font-medium">{displayName}</span>
+              Posting as:{" "}
+              <span className="text-gray-200 font-medium">{displayName}</span>
             </p>
           )}
 
-          {error && <div className="mb-4 p-3 bg-red-600 text-white rounded-lg">{error}</div>}
+          {error && (
+            <div className="mb-4 p-3 bg-red-600 text-white rounded-lg">
+              {error}
+            </div>
+          )}
 
           {!isAuthed && (
             <div className="mb-4 p-3 bg-gray-900 text-white rounded-lg border border-gray-700">
               Please{" "}
-              <a href="/login" className="text-green-400 hover:text-green-300 underline">
+              <a
+                href="/login"
+                className="text-green-400 hover:text-green-300 underline"
+              >
                 log in
               </a>{" "}
               to post a question.
@@ -238,7 +321,9 @@ export default function Forum() {
         {/* Questions */}
         <div className="space-y-6">
           {questions.length === 0 ? (
-            <div className="text-center text-gray-400 py-12">No questions yet. Be the first to ask!</div>
+            <div className="text-center text-gray-400 py-12">
+              No questions yet. Be the first to ask!
+            </div>
           ) : (
             questions.map((q) => {
               const isOpen = openQuestionId === q.id;
@@ -263,15 +348,12 @@ export default function Forum() {
                         </div>
                       </div>
 
-                      <p className="text-gray-200 mt-3 leading-relaxed">{q.question}</p>
+                      <p className="text-gray-200 mt-3 leading-relaxed">
+                        {q.question}
+                      </p>
 
+                      {/* Actions row (we removed likes for QUESTIONS, only keep replies toggle here) */}
                       <div className="flex items-center gap-4 text-sm text-gray-400 mt-4">
-                        <div className="flex items-center gap-1">
-                          <ThumbsUp className="h-4 w-4" />
-                          <span>{q.likes}</span>
-                        </div>
-
-                        {/* Replies toggle is HERE (next to likes) */}
                         <button
                           type="button"
                           onClick={() => toggleOpen(q.id)}
@@ -280,25 +362,52 @@ export default function Forum() {
                           aria-controls={`replies-${q.id}`}
                         >
                           <MessageCircle className="h-4 w-4" />
-                          <span>{isOpen ? "Hide replies" : `${q.replies_count} replies`}</span>
+                          <span>
+                            {isOpen ? "Hide replies" : `${q.replies_count} replies`}
+                          </span>
                         </button>
                       </div>
 
                       {isOpen && (
-                        <div id={`replies-${q.id}`} className="mt-6 border-t border-gray-700 pt-5">
+                        <div
+                          id={`replies-${q.id}`}
+                          className="mt-6 border-t border-gray-700 pt-5"
+                        >
                           {/* Replies list */}
                           <div className="space-y-4">
                             {replies.length === 0 ? (
-                              <p className="text-gray-400">No replies yet — be the first to help.</p>
+                              <p className="text-gray-400">
+                                No replies yet — be the first to help.
+                              </p>
                             ) : (
                               replies.map((r) => (
-                                <div key={r.id} className="bg-gray-900/40 border border-gray-700 rounded-lg p-4">
-                                  <div className="flex items-center justify-between">
+                                <div
+                                  key={r.id}
+                                  className="bg-gray-900/40 border border-gray-700 rounded-lg p-4"
+                                >
+                                  <div className="flex items-center justify-between gap-4">
                                     <div>
-                                      <p className="text-white font-semibold">{r.name}</p>
-                                      <p className="text-gray-400 text-xs">{r.role || "User"}</p>
+                                      <p className="text-white font-semibold">
+                                        {r.name}
+                                      </p>
+                                      <p className="text-gray-400 text-xs">
+                                        {r.role || "User"}
+                                      </p>
                                     </div>
+
+                                    {/* Likes are here (on replies) */}
+                                    <button
+                                      type="button"
+                                      onClick={() => likeReply(q.id, r.id)}
+                                      className="flex items-center gap-1 text-gray-400 hover:text-green-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                      title={isAuthed ? "Like reply" : "Log in to like"}
+                                      disabled={!isAuthed}
+                                    >
+                                      <ThumbsUp className="h-4 w-4" />
+                                      <span className="text-sm">{r.likes ?? 0}</span>
+                                    </button>
                                   </div>
+
                                   <p className="text-gray-200 mt-2">{r.reply}</p>
                                 </div>
                               ))
@@ -307,19 +416,27 @@ export default function Forum() {
 
                           {/* Reply form */}
                           <div className="mt-6 bg-gray-900/40 border border-gray-700 rounded-lg p-4">
-                            <p className="text-white font-semibold mb-2">Write a reply</p>
+                            <p className="text-white font-semibold mb-2">
+                              Write a reply
+                            </p>
 
                             {/* Only show who is replying if logged in */}
                             {isAuthed && (
                               <p className="text-sm text-gray-400 mb-3">
-                                Replying as: <span className="text-gray-200 font-medium">{displayName}</span>
+                                Replying as:{" "}
+                                <span className="text-gray-200 font-medium">
+                                  {displayName}
+                                </span>
                               </p>
                             )}
 
                             {!isAuthed && (
                               <div className="mb-3 p-3 bg-gray-900 text-white rounded-lg border border-gray-700">
                                 Please{" "}
-                                <a href="/login" className="text-green-400 hover:text-green-300 underline">
+                                <a
+                                  href="/login"
+                                  className="text-green-400 hover:text-green-300 underline"
+                                >
                                   log in
                                 </a>{" "}
                                 to reply.

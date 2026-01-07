@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     }
 
     const result = await sql`
-      SELECT id, question_id, name, role, reply, created_at
+      SELECT id, question_id, name, role, reply, likes, created_at
       FROM forum_replies
       WHERE question_id = ${Number(questionId)}
       ORDER BY created_at ASC;
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     const result = await sql`
       INSERT INTO forum_replies (question_id, name, role, reply)
       VALUES (${qid}, ${name}, ${safeRole}, ${safeReply})
-      RETURNING id, question_id, name, role, reply, created_at;
+      RETURNING id, question_id, name, role, reply, likes, created_at;
     `;
 
     return NextResponse.json(result.rows[0]);
