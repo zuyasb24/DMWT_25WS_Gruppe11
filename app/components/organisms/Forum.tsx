@@ -240,13 +240,6 @@ export default function Forum() {
                           <h4 className="text-white font-semibold">{q.name}</h4>
                           <p className="text-gray-400 text-sm">{q.role || "User"}</p>
                         </div>
-
-                        <button
-                          onClick={() => toggleOpen(q.id)}
-                          className="text-green-400 hover:text-green-300 transition-colors text-sm"
-                        >
-                          {isOpen ? "Hide replies" : `Replies (${q.replies_count})`}
-                        </button>
                       </div>
 
                       <p className="text-gray-200 mt-3 leading-relaxed">{q.question}</p>
@@ -256,13 +249,21 @@ export default function Forum() {
                           <span>{q.likes}</span>
                         </div>
 
-                        <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => toggleOpen(q.id)}
+                          className="flex items-center gap-1 text-gray-400 hover:text-green-400 transition-colors"
+                          aria-expanded={isOpen}
+                          aria-controls={`replies-${q.id}`}
+                        >
                           <MessageCircle className="h-4 w-4" />
-                          <span>{q.replies_count} replies</span>
-                        </div>
+                          <span>
+                            {isOpen ? "Hide replies" : `${q.replies_count} replies`}
+                          </span>
+                        </button>
                       </div>
                       {isOpen && (
-                        <div className="mt-6 border-t border-gray-700 pt-5">
+                        <div id={`replies-${q.id}`} className="mt-6 border-t border-gray-700 pt-5">
                           {/* Replies list */}
                           <div className="space-y-4">
                             {replies.length === 0 ? (

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Play, Clock, Search } from "lucide-react";
 import InteractiveRating from "../atoms/InteractiveRating";
 import DifficultyBadge, { type Difficulty } from "../molecules/DifficultyBadge";
+
 type Category = "Smartphone" | "Laptop" | "Tablet" | "Audio";
 
 type Tutorial = {
