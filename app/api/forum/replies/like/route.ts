@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
+    // Require login
     const { auth } = await import("@/app/lib/auth");
     const session = await auth();
 
@@ -19,18 +20,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "replyId is required" }, { status: 400 });
     }
 
-    const result = await sql`
-      UPDATE forum_replies
-      SET likes = COALESCE(likes, 0) + 1
-      WHERE id = ${replyId}
-      RETURNING likes;
-    `;
+    // need the logged-in user's id to prevent multiple likes
+    const userId = Number((session.user as { id?: unknown }).id);
 
-    if (result.rows.length === 0) {
-      return NextResponse.json({ error: "Reply not found" }, { status: 404 });
+    if (!Number.isFinite(userId)) {
+      return NextResponse.json(
+        { error: "User id missing in session" },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ likes: result.rows[0].likes });
+    // Insert like ONCE per user per reply (PRIMARY KEY prevents duplicates)
+    await sql`
+      INSERT INTO forum_reply_likes (reply_id, user_id)
+      VALUES (${replyId}, ${userId})
+      ON CONFLICT (reply_id, user_id) DO NOTHING;
+    `;
+
+    // Return the real like count (source of truth)
+    const countRes = await sql<{ count: number }>`
+      SELECT COUNT(*)::int AS count
+      FROM forum_reply_likes
+      WHERE reply_id = ${replyId};
+    `;
+
+    return NextResponse.json({ likes: countRes.rows[0]?.count ?? 0 });
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : "Failed to like reply";
     return NextResponse.json({ error: msg }, { status: 500 });

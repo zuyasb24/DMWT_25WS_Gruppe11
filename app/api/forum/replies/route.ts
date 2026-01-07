@@ -13,10 +13,17 @@ export async function GET(req: Request) {
     }
 
     const result = await sql`
-      SELECT id, question_id, name, role, reply, likes, created_at
-      FROM forum_replies
-      WHERE question_id = ${Number(questionId)}
-      ORDER BY created_at ASC;
+      SELECT 
+        r.id, r.question_id, r.name, r.role, r.reply, r.created_at,
+        COALESCE(l.likes, 0) AS likes
+      FROM forum_replies r
+      LEFT JOIN (
+        SELECT reply_id, COUNT(*)::int AS likes
+        FROM forum_reply_likes
+        GROUP BY reply_id
+      ) l ON l.reply_id = r.id
+      WHERE r.question_id = ${Number(questionId)}
+      ORDER BY r.created_at ASC;
     `;
 
     return NextResponse.json(result.rows);
