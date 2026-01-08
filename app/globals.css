@@ -44,7 +44,7 @@ body {
 
 /* Dark overlay background */
 .overlay-dark {
-  background: rgba(15, 23, 42, 0.75); /* slate-ish, matches site */
+  background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(6px);
 }
 

@@ -59,7 +59,7 @@ type ActionButtonProps = {
 
 function ActionButton({ href, onClick, children }: ActionButtonProps) {
   const className =
-  "flex items-center justify-center text-center text-white font-bold w-full sm:w-auto";
+    "flex items-center justify-center text-center text-white font-bold w-full sm:w-auto";
 
   if (href) {
     return (
@@ -70,7 +70,7 @@ function ActionButton({ href, onClick, children }: ActionButtonProps) {
   }
 
   return (
-    <button onClick={onClick} className={className} style={buttonStyle}>
+    <button type="button" onClick={onClick} className={className} style={buttonStyle}>
       {children}
     </button>
   );
@@ -103,7 +103,6 @@ export default function Infographic() {
 
   const current = DEVICES[active];
 
-  // Single click = break + shake + open modal
   const handleDeviceClick = (id: DeviceId) => {
     if (id !== active) return;
 
@@ -115,19 +114,13 @@ export default function Infographic() {
   };
 
   return (
-    <section
-      id="infographic"
-      className="relative min-h-screen bg-black overflow-hidden"
-    >
+    <section id="infographic" className="relative min-h-screen bg-black overflow-hidden">
       {/* Reset area */}
       <div className="absolute inset-0 z-0" onClick={resetAll} />
 
-      {/* Dark overlay */}
+      {/* Dark overlay (tint color comes from globals.css .overlay-dark) */}
       {showOverlay && (
-        <div
-          className="absolute inset-0 z-30 overlay-dark"
-          onClick={resetAll}
-        />
+        <div className="absolute inset-0 z-30 overlay-dark" onClick={resetAll} />
       )}
 
       {/* Headline */}
@@ -153,12 +146,20 @@ export default function Infographic() {
         </div>
       </div>
 
-      {/* Devices */}
+      {/* Devices wrapper:
+          - mobile: use padding-top so devices don't collide with the absolute headline
+          - desktop: go back to vertical centering
+      */}
       <div
         className="relative z-40 flex justify-center min-h-screen pt-56 sm:pt-64 md:pt-0 md:items-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex flex-wrap md:flex-nowrap items-end justify-center gap-6 md:gap-16 lg:gap-24 mt-32 md:mt-64 md:translate-x-[-80px]">
+        {/* Device row:
+            - mobile: wrap
+            - desktop: single row + your original shift
+            - items-end aligns devices on baseline
+        */}
+        <div className="flex flex-wrap md:flex-nowrap items-end justify-center gap-6 md:gap-16 lg:gap-24 md:mt-64 md:translate-x-[-80px]">
           {(["laptop", "phone", "watch"] as DeviceId[]).map((id) => {
             const device = DEVICES[id];
             const isActive = id === active;
@@ -219,10 +220,7 @@ export default function Infographic() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-6">
-                  <ActionButton href="#tutorials">
-                    Learn to repair
-                  </ActionButton>
-
+                  <ActionButton href="#tutorials">Learn to repair</ActionButton>
                   <ActionButton onClick={() => setShowSustainableMessage(true)}>
                     Throw it away
                   </ActionButton>
@@ -235,15 +233,13 @@ export default function Infographic() {
                 </h2>
 
                 <p className="text-slate-200 mb-6 leading-relaxed text-lg">
-                  Send your device to us to help reduce electronic waste!
-                  We repair, reuse or recycle devices responsibly, giving
+                  Send your device to us to help reduce electronic waste! We
+                  repair, reuse or recycle devices responsibly, giving
                   technology a second life.
                 </p>
 
                 <div className="flex justify-center mb-6">
-                  <ActionButton href="/legal-notice">
-                    Contact us
-                  </ActionButton>
+                  <ActionButton href="/legal-notice">Contact us</ActionButton>
                 </div>
               </>
             )}
