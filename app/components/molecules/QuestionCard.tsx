@@ -44,7 +44,6 @@ type QuestionCardProps = {
   // likes
   isAuthed: boolean;
   displayName: string;
-  onLikeReply: (replyId: number) => void;
 };
 
 export default function QuestionCard({
@@ -59,7 +58,6 @@ export default function QuestionCard({
   onSubmitReply,
   isAuthed,
   displayName,
-  onLikeReply,
 }: QuestionCardProps) {
   return (
     <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-green-400 transition-all duration-300">
@@ -104,7 +102,6 @@ export default function QuestionCard({
                       key={r.id}
                       reply={r}
                       isAuthed={isAuthed}
-                      onLike={() => onLikeReply(r.id)}
                     />
                   ))
                 )}

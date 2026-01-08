@@ -187,65 +187,6 @@ export default function Forum() {
     }
   }
 
-  // Like a reply (ONLY replies have likes now)
-  async function likeReply(questionId: number, replyId: number) {
-    setError("");
-
-    if (!isAuthed) {
-      setError("Please log in to like replies.");
-      return;
-    }
-
-    // Optimistic UI update (instant feedback)
-    setRepliesByQ((prev) => {
-      const current = prev[questionId] ?? [];
-      return {
-        ...prev,
-        [questionId]: current.map((r) =>
-          r.id === replyId ? { ...r, likes: (r.likes ?? 0) + 1, liked_by_me: true } : r
-        ),
-      };
-    });
-
-    try {
-      const res = await fetch("/api/forum/replies/like", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ replyId }),
-      });
-
-      if (!res.ok) {
-        // rollback by refetching replies (safe)
-        const refreshed = await fetch(
-          `/api/forum/replies?questionId=${questionId}`,
-          { cache: "no-store" }
-        );
-        const data = (await refreshed.json()) as Reply[];
-        setRepliesByQ((prev) => ({
-          ...prev,
-          [questionId]: Array.isArray(data) ? data : [],
-        }));
-        setError("Failed to like reply");
-        return;
-      }
-
-      const data = (await res.json()) as { likes: number };
-
-      // Sync with server count
-      setRepliesByQ((prev) => {
-        const current = prev[questionId] ?? [];
-        return {
-          ...prev,
-          [questionId]: current.map((r) =>
-            r.id === replyId ? { ...r, likes: data.likes } : r
-          ),
-        };
-      });
-    } catch (e) {
-      console.error(e);
-      setError("Error liking reply");
-    }
-  }
 
   return (
     <section id="forum" className="py-20">
@@ -350,7 +291,6 @@ export default function Forum() {
                   onSubmitReply={() => submitReply(q.id)}
                   isAuthed={isAuthed}
                   displayName={displayName}
-                  onLikeReply={(replyId) => likeReply(q.id, replyId)}
                 />
               );
             })
