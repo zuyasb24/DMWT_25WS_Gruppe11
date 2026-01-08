@@ -59,7 +59,7 @@ type ActionButtonProps = {
 
 function ActionButton({ href, onClick, children }: ActionButtonProps) {
   const className =
-    "flex items-center justify-center text-center text-white font-bold";
+  "flex items-center justify-center text-center text-white font-bold w-full sm:w-auto";
 
   if (href) {
     return (
@@ -137,8 +137,8 @@ export default function Infographic() {
       >
         <div>
           <p
-            className="text-white font-bold leading-snug"
-            style={{ fontFamily: "Inter, sans-serif", fontSize: 46 }}
+            className="text-white font-bold leading-snug text-3xl sm:text-4xl lg:text-[46px]"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             Your <span style={{ color: green }}>device</span> isn&apos;t trash —
             <br />
@@ -155,10 +155,10 @@ export default function Infographic() {
 
       {/* Devices */}
       <div
-        className="relative z-40 flex items-center justify-center min-h-screen"
+        className="relative z-40 flex justify-center min-h-screen pt-56 sm:pt-64 md:pt-0 md:items-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-center gap-10 md:gap-16 lg:gap-24 mt-64 translate-x-[-80px]">
+        <div className="flex flex-wrap md:flex-nowrap items-end justify-center gap-6 md:gap-16 lg:gap-24 mt-32 md:mt-64 md:translate-x-[-80px]">
           {(["laptop", "phone", "watch"] as DeviceId[]).map((id) => {
             const device = DEVICES[id];
             const isActive = id === active;
@@ -218,7 +218,7 @@ export default function Infographic() {
                   <span style={{ color: green, fontWeight: 700 }}>fixable</span>!
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-4 mb-6">
+                <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-6">
                   <ActionButton href="#tutorials">
                     Learn to repair
                   </ActionButton>
