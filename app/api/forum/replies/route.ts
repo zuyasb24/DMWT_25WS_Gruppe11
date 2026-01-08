@@ -12,10 +12,33 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "questionId is required" }, { status: 400 });
     }
 
+    // Optional auth: if logged in, we can compute liked_by_me
+    const { auth } = await import("@/app/lib/auth");
+    const session = await auth();
+
+    // We stored id on session.user in your auth callbacks
+    const userIdRaw = (session?.user as { id?: unknown } | undefined)?.id;
+    const userId = typeof userIdRaw === "string" || typeof userIdRaw === "number" ? Number(userIdRaw) : null;
+    const safeUserId = Number.isFinite(userId as number) ? (userId as number) : null;
+
     const result = await sql`
       SELECT 
-        r.id, r.question_id, r.name, r.role, r.reply, r.created_at,
-        COALESCE(l.likes, 0) AS likes
+        r.id,
+        r.question_id,
+        r.name,
+        r.role,
+        r.reply,
+        r.created_at,
+        COALESCE(l.likes, 0) AS likes,
+        CASE
+          WHEN ${safeUserId}::int IS NULL THEN false
+          ELSE EXISTS (
+            SELECT 1
+            FROM forum_reply_likes frl
+            WHERE frl.reply_id = r.id
+              AND frl.user_id = ${safeUserId}
+          )
+        END AS liked_by_me
       FROM forum_replies r
       LEFT JOIN (
         SELECT reply_id, COUNT(*)::int AS likes

@@ -202,7 +202,7 @@ export default function Forum() {
       return {
         ...prev,
         [questionId]: current.map((r) =>
-          r.id === replyId ? { ...r, likes: (r.likes ?? 0) + 1 } : r
+          r.id === replyId ? { ...r, likes: (r.likes ?? 0) + 1, liked_by_me: true } : r
         ),
       };
     });
