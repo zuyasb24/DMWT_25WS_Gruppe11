@@ -24,9 +24,9 @@ export default function LegalNotice() {
             <p className="text-white/80 leading-relaxed">
               <strong className="text-white">Green IT Repair</strong>
               <br />
-              Recycling Street 12
+              Alteburgstr. 150
               <br />
-              70599 Stuttgart
+              72762 Reutlingen
               <br />
               Germany
             </p>
@@ -48,7 +48,7 @@ export default function LegalNotice() {
               <br />
               Website:{" "}
               <span className="text-white">
-                www.greenit-repair.example
+                https://greenit-rho.vercel.app
               </span>
             </p>
           </section>
