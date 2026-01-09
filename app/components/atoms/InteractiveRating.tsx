@@ -1,7 +1,7 @@
 "use client";
 
 import { Star } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 export default function InteractiveRating({
@@ -18,6 +18,11 @@ export default function InteractiveRating({
   const [count, setCount] = useState(initialCount);
   const [hover, setHover] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+  setAvg(initialAvg);
+  setCount(initialCount);
+  }, [initialAvg, initialCount]);
 
   async function submitRating(value: number) {
     if (!session?.user) {
