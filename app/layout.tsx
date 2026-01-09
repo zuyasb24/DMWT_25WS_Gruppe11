@@ -11,9 +11,10 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "Green IT Repair",
   description: "Green IT Device Repair Guide",
-  icons: {
-      icon: "/favicon.png",
-    },
+  icons: [
+      { url: "/favicon.ico" }, // because Safari didnt display it
+      { url: "/favicon.png", type: "image/png" }, // for all browsers
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
