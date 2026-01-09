@@ -159,7 +159,7 @@ export default function Infographic() {
             - desktop: single row + your original shift
             - items-end aligns devices on baseline
         */}
-        <div className="flex flex-wrap md:flex-nowrap items-end justify-center gap-6 md:gap-16 lg:gap-24 md:mt-64 md:translate-x-[-80px]">
+        <div className="flex flex-wrap md:flex-nowrap items-end justify-between gap-8 md:gap-20 lg:gap-28 mt-32 md:mt-64 md:translate-x-[-80px]">
           {(["laptop", "phone", "watch"] as DeviceId[]).map((id) => {
             const device = DEVICES[id];
             const isActive = id === active;
