@@ -207,14 +207,22 @@ export default function Infographic() {
           className="absolute inset-0 z-50 flex items-center justify-center px-4"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="max-w-xl w-full rounded-2xl bg-black border border-neutral-800 px-8 py-10 shadow-2xl text-center">
+          <div className="relative max-w-xl w-full rounded-2xl border border-white/10 bg-slate-900/90 px-8 py-10 shadow-xl text-center">
+            <button
+              type="button"
+              onClick={() => setShowOverlay(false)}
+              aria-label="Close modal"
+              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-white text-2xl font-bild hover:text-[#22c55e] hover:bg-white/10 transition"
+            >
+              ×
+            </button>
             {!showSustainableMessage ? (
               <>
                 <h2 className="text-white font-bold mb-4 text-2xl">
                   {current.title}
                 </h2>
 
-                <p className="text-slate-200 mb-8 leading-relaxed text-lg">
+                <p className="text-white/80 mb-8 leading-relaxed text-lg">
                   {current.text.split("fixable!")[0]}
                   <span style={{ color: green, fontWeight: 700 }}>fixable</span>!
                 </p>
@@ -229,10 +237,11 @@ export default function Infographic() {
             ) : (
               <>
                 <h2 className="text-white font-bold mb-4 text-2xl">
-                  You can still make a sustainable choice 🌱
+                  You can still make a{" "}
+                  <span style={{ color: green, fontWeight: 700 }}>sustainable choice</span>
                 </h2>
 
-                <p className="text-slate-200 mb-6 leading-relaxed text-lg">
+                <p className="text-white/80 mb-8 leading-relaxed text-lg">
                   Send your device to us to help reduce electronic waste! We
                   repair, reuse or recycle devices responsibly, giving
                   technology a second life.
@@ -244,13 +253,6 @@ export default function Infographic() {
               </>
             )}
 
-            <button
-              type="button"
-              className="mt-2 text-sm text-white/80 hover:text-white"
-              onClick={() => setShowOverlay(false)}
-            >
-              Close
-            </button>
           </div>
         </div>
       )}

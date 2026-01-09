@@ -12,11 +12,11 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "questionId is required" }, { status: 400 });
     }
 
-    // Optional auth: if logged in, we can compute liked_by_me
+    // if logged in, I can compute liked_by_me
     const { auth } = await import("@/app/lib/auth");
     const session = await auth();
 
-    // We stored id on session.user in your auth callbacks
+    // id stored on session.user in auth callbacks
     const userIdRaw = (session?.user as { id?: unknown } | undefined)?.id;
     const userId = typeof userIdRaw === "string" || typeof userIdRaw === "number" ? Number(userIdRaw) : null;
     const safeUserId = Number.isFinite(userId as number) ? (userId as number) : null;
