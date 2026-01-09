@@ -151,7 +151,7 @@ export default function Infographic() {
           - desktop: go back to vertical centering
       */}
       <div
-        className="relative z-40 flex justify-center min-h-screen pt-56 sm:pt-64 md:pt-0 md:items-center"
+        className="relative z-40 flex justify-center min-h-screen pt-56 sm:pt-64 md:pt-20 md:items-center"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Device row:
@@ -166,7 +166,7 @@ export default function Infographic() {
             const isBroken = broken === id;
             const isShaking = shakeDevice === id;
 
-            const sizeFactor = id === "laptop" ? 1.8 : 1;
+            const sizeFactor = id === "laptop" ? 1.8 : id === "phone" ? 0.75 : 1;
             const baseWidth = (isActive ? 260 : 200) * sizeFactor;
             const baseHeight = (isActive ? 180 : 140) * sizeFactor;
 
@@ -177,6 +177,7 @@ export default function Infographic() {
                   "relative flex flex-col items-center transition-transform duration-300 ease-out",
                   isActive ? "device-active" : "opacity-80 hover:opacity-100",
                   isShaking ? "shake-once" : "",
+                  id === "watch" ? "-translate-y-7" : "",
                 ].join(" ")}
                 onMouseEnter={() => !isActive && setActive(id)}
               >
