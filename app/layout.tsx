@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Green IT Device Repair Guide",
   icons: [
       { url: "/favicon.ico" }, // because Safari didnt display it
-      { url: "/favicon.png", type: "image/png" }, // for all browsers
+      { url: "/favicon-v2.png", type: "image/png" }, // for all browsers
   ],
 };
 
