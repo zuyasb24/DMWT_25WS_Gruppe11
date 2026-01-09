@@ -24,7 +24,7 @@ export default function Footer() {
         </Link>
        
         <p className="text-sm text-white/50 text-center">
-          © 2025 Green IT Repair. All rights reserved.
+          © {new Date().getFullYear()} Green IT Repair. All rights reserved.
         </p>
 
         <div className="flex gap-6">
