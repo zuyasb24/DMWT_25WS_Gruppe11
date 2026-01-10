@@ -23,9 +23,7 @@ body {
   padding: 0;
 }
 
-/* =========================
-   Animations (Infographic)
-   ========================= */
+/* Infographic */
 
 /* Subtle breathing animation for active device */
 @keyframes breathe {

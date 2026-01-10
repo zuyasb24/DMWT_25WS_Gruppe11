@@ -21,7 +21,7 @@ type ReplyCardProps = {
 };
 
 export default function ReplyCard({ reply, isAuthed, displayName }: ReplyCardProps) {
-  // Local UI state (so ReplyCard controls optimistic updates)
+  // Local UI state ( ReplyCard controls optimistic updates)
   const [likes, setLikes] = useState<number>(reply.likes ?? 0);
   const [liked, setLiked] = useState<boolean>(Boolean(reply.liked_by_me));
   const [loading, setLoading] = useState(false);
@@ -50,7 +50,6 @@ export default function ReplyCard({ reply, isAuthed, displayName }: ReplyCardPro
 
       if (!res.ok) throw new Error("Like failed");
 
-      // Optional: sync likes from server (not strictly necessary)
       const data = (await res.json()) as { likes?: number };
       if (typeof data.likes === "number") setLikes(data.likes);
     } catch (e) {

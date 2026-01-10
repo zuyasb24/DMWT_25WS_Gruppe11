@@ -146,19 +146,12 @@ export default function Infographic() {
         </div>
       </div>
 
-      {/* Devices wrapper:
-          - mobile: use padding-top so devices don't collide with the absolute headline
-          - desktop: go back to vertical centering
-      */}
+      {/* Devices wrapper */}
       <div
         className="relative z-40 flex justify-center min-h-screen pt-56 sm:pt-64 md:pt-20 md:items-center"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Device row:
-            - mobile: wrap
-            - desktop: single row + your original shift
-            - items-end aligns devices on baseline
-        */}
+        {/* Device row:*/}
         <div className="flex flex-wrap md:flex-nowrap items-end justify-between gap-8 md:gap-20 lg:gap-28 mt-32 md:mt-64 md:translate-x-[-80px]">
           {(["laptop", "phone", "watch"] as DeviceId[]).map((id) => {
             const device = DEVICES[id];

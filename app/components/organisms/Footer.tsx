@@ -29,7 +29,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Bottom links row (space between) */}
+        {/* Bottom legal links row */}
         <div className="mt-12 flex justify-center gap-20">
           <Link
             href="/privacy-policy"

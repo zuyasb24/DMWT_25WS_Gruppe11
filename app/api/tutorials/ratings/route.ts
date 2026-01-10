@@ -14,10 +14,9 @@ export async function GET(req: Request) {
     return NextResponse.json({});
   }
 
-  // Build placeholders: $1, $2, $3 etc
+  // Build placeholders $1, $2, $3 etc
   const placeholders = keys.map((_, i) => `$${i + 1}`).join(", ");
 
-  // Use IN (...) with parameterized query (safe)
   const result = await sql.query<{
     tutorial_key: string;
     avg: number;

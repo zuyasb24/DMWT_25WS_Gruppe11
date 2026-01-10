@@ -27,7 +27,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     //Require login
-    const { auth } = await import("@/app/lib/auth"); // adjust if your auth helper path differs
+    const { auth } = await import("@/app/lib/auth"); 
     const session = await auth();
 
     if (!session?.user) {
