@@ -107,6 +107,7 @@ export default function QuestionCard({
                       key={r.id}
                       reply={r}
                       isAuthed={isAuthed}
+                      displayName={displayName}
                     />
                   ))
                 )}
