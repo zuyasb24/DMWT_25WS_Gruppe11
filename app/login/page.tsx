@@ -2,8 +2,12 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [mode, setMode] = useState<"login" | "register">("login");
 
   const [email, setEmail] = useState("");
@@ -12,10 +16,12 @@ export default function LoginPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setSuccess(false);
     setLoading(true);
 
     try {
@@ -55,11 +61,17 @@ export default function LoginPage() {
         return;
       }
 
-      window.location.href = result?.url ?? "/";
+     // Show success animation briefly, then navigate
+      setLoading(false);
+      setSuccess(true);
+
+      setTimeout(() => {
+        router.push(result?.url ?? "/");
+        router.refresh();
+      }, 1800);
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Try again.");
-    } finally {
       setLoading(false);
     }
   }
@@ -75,6 +87,28 @@ export default function LoginPage() {
             ? "Log in to post questions and replies."
             : "Create an account to post questions and replies."}
         </p>
+        
+        {/* Animations area */}
+        <div className="mb-4 flex justify-center min-h-[56px]">
+          {loading && (
+            <Image
+              src="/animations/login-loading.gif"
+              alt="Loading"
+              width={48}
+              height={48}
+              unoptimized
+            />
+          )}
+          {!loading && success && (
+            <Image
+              src="/animations/login-success.gif"
+              alt="Login successful"
+              width={56}
+              height={56}
+              unoptimized
+            />
+          )}
+        </div>
 
         {error && (
           <div className="mb-4 p-3 bg-red-600 text-white rounded-lg">
