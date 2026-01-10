@@ -59,7 +59,7 @@ type ActionButtonProps = {
 
 function ActionButton({ href, onClick, children }: ActionButtonProps) {
   const className =
-    "flex items-center justify-center text-center text-white font-bold w-full sm:w-auto";
+    "flex items-center justify-center text-center text-white font-bold w-full sm:w-auto cursor-pointer";
 
   if (href) {
     return (
@@ -185,6 +185,7 @@ export default function Infographic() {
                   type="button"
                   onClick={() => handleDeviceClick(id)}
                   aria-label={`View information about ${id}`}
+                  className="cursor-pointer hover:opacity-100"
                 >
                   <Image
                     src={isBroken ? device.imageBroken : device.imageNormal}
