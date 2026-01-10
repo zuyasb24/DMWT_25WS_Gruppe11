@@ -31,7 +31,7 @@ export default function ReplyForm({
       {/* Only show who is replying if logged in */}
       {isAuthed && (
         <p className="text-sm text-gray-400 mb-3">
-          Replying as: <span className="text-gray-200 font-medium">{displayName}</span>
+          Replying as: <span className="text-green-400 font-medium">{displayName}</span>
         </p>
       )}
 

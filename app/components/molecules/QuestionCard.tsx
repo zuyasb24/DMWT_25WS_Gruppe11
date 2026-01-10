@@ -59,6 +59,9 @@ export default function QuestionCard({
   isAuthed,
   displayName,
 }: QuestionCardProps) {
+
+  const isMine = q.name === displayName;
+
   return (
     <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-green-400 transition-all duration-300">
       <div className="flex items-start gap-4">
@@ -69,7 +72,9 @@ export default function QuestionCard({
         <div className="flex-1">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <h4 className="text-white font-semibold">{q.name}</h4>
+              <h4 className={`font-semibold ${isMine ? "text-green-400" : "text-white"}`}>
+                {q.name}
+              </h4>
               <p className="text-gray-400 text-sm">{q.role || "User"}</p>
             </div>
           </div>

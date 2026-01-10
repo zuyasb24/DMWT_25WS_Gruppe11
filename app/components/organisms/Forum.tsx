@@ -207,7 +207,7 @@ export default function Forum() {
           {isAuthed && (
             <p className="text-sm text-gray-400 mb-4">
               Posting as:{" "}
-              <span className="text-gray-200 font-medium">{displayName}</span>
+              <span className="text-green-400 font-medium">{displayName}</span>
             </p>
           )}
 

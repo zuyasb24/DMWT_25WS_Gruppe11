@@ -17,13 +17,15 @@ type Reply = {
 type ReplyCardProps = {
   reply: Reply;
   isAuthed: boolean;
+  displayName: string;
 };
 
-export default function ReplyCard({ reply, isAuthed }: ReplyCardProps) {
+export default function ReplyCard({ reply, isAuthed, displayName }: ReplyCardProps) {
   // Local UI state (so ReplyCard controls optimistic updates)
   const [likes, setLikes] = useState<number>(reply.likes ?? 0);
   const [liked, setLiked] = useState<boolean>(Boolean(reply.liked_by_me));
   const [loading, setLoading] = useState(false);
+  const isMine = reply.name === displayName;
 
   // If parent refetches replies, keep local state in sync
   useEffect(() => {
@@ -65,7 +67,9 @@ export default function ReplyCard({ reply, isAuthed }: ReplyCardProps) {
     <div className="bg-gray-900/40 border border-gray-700 rounded-lg p-4">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-white font-semibold">{reply.name}</p>
+          <p className={`font-semibold ${isMine ? "text-green-400" : "text-white"}`}>
+            {reply.name}
+          </p>
           <p className="text-gray-400 text-xs">{reply.role || "User"}</p>
         </div>
 
