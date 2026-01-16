@@ -29,17 +29,32 @@ export default function Footer() {
           </p>
         </div>
 
+        {/* Legal project notice (MANDATORY) */}
+          <p className="mt-8 text-sm text-gray-400 text-center max-w-4xl mx-auto leading-relaxed">
+            <strong>Studentisches Lehrprojekt:</strong> Diese Website ist eine
+            Studierendenarbeit der Hochschule Reutlingen zu Lehr- und Lernzwecken.
+            Alle Inhalte, Produkte und Dienstleistungen sind fiktiv und nicht geprüft.
+            Bitte geben Sie keine sensiblen oder personenbezogene Daten in die Formulare
+            der Website ein.{" "}
+            <Link
+              href="/impressum"
+              className="text-green-400 hover:underline"
+            >
+              Mehr Informationen im Impressum →
+            </Link>
+          </p>
+
         {/* Bottom legal links row */}
         <div className="mt-12 flex justify-center gap-20">
           <Link
-            href="/privacy-policy"
+            href="/impressum"
             className="text-base font-semibold text-gray-300 hover:text-green-400 transition-colors"
           >
-            Privacy Policy
+            Impressum
           </Link>
 
           <Link
-            href="/legal-notice"
+            href="/contact"
             className="text-base font-semibold text-gray-300 hover:text-green-400 transition-colors"
           >
             Contact
