@@ -1,3 +1,5 @@
+// NextAuth configuration (Credentials provider).
+// Validates user credentials against the DB and exposes auth() + route handlers for the app.
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
@@ -42,8 +44,10 @@ const config = {
   ],
 
   pages: { signIn: "/login" },
+  // Use JWT sessions so we can attach the user id to the token and access it in API routes
   session: { strategy: "jwt" },
 
+  // Persist the user id in the JWT and mirror it onto session.user so API routes can identify the user
   callbacks: {
     async jwt({ token, user }) {
       if (user?.id) (token as { id?: string }).id = String(user.id);

@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 import bcrypt from "bcryptjs";
 
+// POST /api/auth/register
+// Creates a new user account (email + username) and stores a hashed password in the DB.
+// Returns { ok: true } on success or { error: string } with an appropriate status code.
 export async function POST(req: Request) {
   try {
     const body = await req.json();

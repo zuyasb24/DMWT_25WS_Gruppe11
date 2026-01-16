@@ -1,3 +1,7 @@
+// GET /api/forum/replies?questionId=...
+// Returns replies for a given question, including like count and liked_by_me (if user is logged in).
+// POST /api/forum/replies
+// Creates a new reply for a question (authenticated users only).
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
@@ -9,7 +13,7 @@ export async function GET(req: Request) {
     const questionId = searchParams.get("questionId");
 
     if (!questionId) {
-      return NextResponse.json({ error: "questionId is required" }, { status: 400 });
+      return NextResponse.json({ error: "questionId is required." }, { status: 400 });
     }
 
     // if logged in, I can compute liked_by_me
@@ -75,7 +79,7 @@ export async function POST(req: Request) {
 
     if (!Number.isFinite(qid) || !safeReply) {
       return NextResponse.json(
-        { error: "questionId and reply are required" },
+        { error: "questionId and reply are required." },
         { status: 400 }
       );
     }

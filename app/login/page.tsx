@@ -68,7 +68,7 @@ export default function LoginPage() {
       setTimeout(() => {
         router.push(result?.url ?? "/");
         router.refresh();
-      }, 1800);
+      }, 2000);
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Try again.");

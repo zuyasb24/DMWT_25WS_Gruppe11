@@ -1,6 +1,10 @@
+// POST /api/forum/replies/like
+// Adds a like to a reply for the current user.
+// Ensures a user can like a reply only once and returns the updated like count.
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
+// Disable caching to always return the current like count
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
@@ -17,7 +21,7 @@ export async function POST(req: Request) {
     const replyId = Number(body.replyId);
 
     if (!Number.isFinite(replyId)) {
-      return NextResponse.json({ error: "replyId is required" }, { status: 400 });
+      return NextResponse.json({ error: "replyId is required." }, { status: 400 });
     }
 
     // need the logged-in user's id to prevent multiple likes
@@ -25,12 +29,12 @@ export async function POST(req: Request) {
 
     if (!Number.isFinite(userId)) {
       return NextResponse.json(
-        { error: "User id missing in session" },
+        { error: "User id missing in session." },
         { status: 500 }
       );
     }
 
-    // Insert like ONCE per user per reply (PRIMARY KEY prevents duplicates)
+    // Insert like ONCE per user per reply (PRIMARY KEY and ON conflict prevents duplicates)
     await sql`
       INSERT INTO forum_reply_likes (reply_id, user_id)
       VALUES (${replyId}, ${userId})

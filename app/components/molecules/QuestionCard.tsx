@@ -27,11 +27,9 @@ type Reply = {
 type QuestionCardProps = {
   q: Question;
 
-  // open/close
   isOpen: boolean;
   onToggle: () => void;
 
-  // replies
   replies: Reply[];
 
   // reply draft
@@ -63,7 +61,7 @@ export default function QuestionCard({
   const isMine = q.name === displayName;
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-green-400 transition-all duration-300">
+    <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
           {q.name.charAt(0).toUpperCase()}

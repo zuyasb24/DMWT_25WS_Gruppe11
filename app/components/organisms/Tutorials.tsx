@@ -62,7 +62,7 @@ const tutorials: Tutorial[] = [
   },
   {
     key: "smartphone-water-damage-recovery",
-    title: "Smartphone Water Damage Recovery",
+    title: "Smartphone Water Damage Fix",
     intro:
       "Emergency steps and recovery methods to save a water-damaged phone.",
     duration: "12 min",

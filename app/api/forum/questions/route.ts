@@ -1,6 +1,11 @@
+// GET /api/forum/questions
+// Returns all forum questions with their reply count.
+// POST /api/forum/questions
+// Creates a new forum question (authenticated users only).
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
+// Disable static caching to always return the latest forum data
 export const dynamic = "force-dynamic";
 
 export async function GET() {
@@ -27,7 +32,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     //Require login
-    const { auth } = await import("@/app/lib/auth"); 
+    const { auth } = await import("@/app/lib/auth"); // Import auth dynamically to avoid bundling issues in edge/runtime context
     const session = await auth();
 
     if (!session?.user) {
@@ -41,7 +46,7 @@ export async function POST(req: Request) {
     const safeQuestion = String(question ?? "").trim();
 
     if (!safeQuestion) {
-      return NextResponse.json({ error: "question is required" }, { status: 400 });
+      return NextResponse.json({ error: "Question is required." }, { status: 400 });
     }
 
     const result = await sql`
