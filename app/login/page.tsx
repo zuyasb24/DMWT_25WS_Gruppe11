@@ -68,7 +68,7 @@ export default function LoginPage() {
       setTimeout(() => {
         router.push(result?.url ?? "/");
         router.refresh();
-      }, 2000);
+      }, 2000); //delay redirect so the animation can fully play
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Try again.");

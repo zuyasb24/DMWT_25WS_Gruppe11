@@ -30,10 +30,10 @@ export default function CreatorCTASection() {
 
             <div className="mt-8 flex justify-center">
               <a
-                href="/login"
+                href="/legal-notice"
                 className="inline-flex items-center justify-center rounded-lg bg-green-600 hover:bg-green-500 text-white font-semibold px-8 py-3 transition-colors duration-300"
               >
-                Request creator access
+                Contact us for creator access
               </a>
             </div>
 
