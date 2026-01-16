@@ -210,7 +210,10 @@ export default function Tutorials() {
           </div>
         </motion.div>
 
-        {/* Cards */}
+        {/* Cards 
+        // Card markup is kept inline since it is only used once and closely tied
+        // to filtering, animation, and rating state in this component.*/
+        }
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredTutorials.map((tutorial, index) => {
             const videoId = extractYouTubeId(tutorial.youtubeUrl);
