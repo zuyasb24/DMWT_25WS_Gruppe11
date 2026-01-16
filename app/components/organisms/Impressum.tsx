@@ -5,7 +5,7 @@ export default function LegalNotice() {
         {/* Page title */}
         <header className="text-center">
           <h1 className="text-3xl font-semibold text-white">
-            <span className="text-white">Impressum: Disclaimer, Datenschutz & Urheberrecht</span>
+            <span className="text-white">Impressum: Disclaimer, Datenschutz &amp; Urheberrecht</span>
           </h1>
         </header>
 
@@ -18,7 +18,7 @@ export default function LegalNotice() {
             </h2>
             <p>
               Diese Website ist ein Lehrprojekt, das im Rahmen des Moduls
-              "Digital Media & Webtechnologien" im Studiengang Medien- und
+              &quot;Digital Media &amp; Webtechnologien&quot; im Studiengang Medien- und
               Kommunikationsinformatik (B.Sc.) an der Hochschule Reutlingen
               erstellt wurde.
             </p>
@@ -285,7 +285,7 @@ export default function LegalNotice() {
               <ul className="list-disc pl-5 space-y-1">
                 <li>Auskunft (Art. 15 DSGVO): Welche Ihrer Daten wurden gespeichert?</li>
                 <li>Berichtigung (Art. 16 DSGVO): Korrektur falscher Daten</li>
-                <li>Löschung (Art. 17 DSGVO): Löschung Ihrer Daten ("Recht auf Vergessenwerden")</li>
+                <li>Löschung (Art. 17 DSGVO): Löschung Ihrer Daten (&quot;Recht auf Vergessenwerden&quot;)</li>
                 <li>Einschränkung (Art. 18 DSGVO): Einschränkung der Verarbeitung</li>
                 <li>Datenübertragbarkeit (Art. 20 DSGVO): Erhalt Ihrer Daten in maschinenlesbarem Format</li>
                 <li>Widerspruch (Art. 21 DSGVO): Widerspruch gegen die Verarbeitung</li>
@@ -371,7 +371,7 @@ export default function LegalNotice() {
             <ul className="list-disc pl-5 space-y-1">
               <li>Bilder: KI-generierte Bilder (Hero-Bereich, Infografik)</li>
               <li>Icons: Lucide Icons</li>
-              <li>Schriftarten: System- & Webfonts</li>
+              <li>Schriftarten: System- &amp; Webfonts</li>
             </ul>
             <p>
               Eine Weiterverwendung oder Vervielfältigung der Inhalte außerhalb dieser Website bedarf

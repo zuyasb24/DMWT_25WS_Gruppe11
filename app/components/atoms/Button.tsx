@@ -1,5 +1,6 @@
 import React from "react";
 
+//Primary CTA button
 type ButtonProps = {
   children: React.ReactNode;
   href?: string;

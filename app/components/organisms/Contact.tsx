@@ -4,7 +4,6 @@ export default function Contact() {
   return (
     <section className="w-full px-6 py-16 flex justify-center">
       <div className="max-w-3xl w-full space-y-10">
-        {/* Page title */}
         <header className="text-center">
           <h1 className="text-3xl font-semibold text-white">
             Contact
@@ -16,7 +15,6 @@ export default function Contact() {
 
         {/* Content box */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-8 space-y-8">
-          {/* Company */}
           <section>
             <h2 className="text-lg font-semibold text-green-400 mb-2">
               Company Information

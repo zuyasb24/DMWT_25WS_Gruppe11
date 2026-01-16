@@ -22,7 +22,6 @@ export default function Hero() {
           Learn practical repair guides that extend your device’s life and reduce e-waste.
         </p>
 
-        {/*CTA using shared Button component */}
         <Button href="#tutorials">
           Start repairing
         </Button>

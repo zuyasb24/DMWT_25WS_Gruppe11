@@ -1,15 +1,12 @@
 @import "tailwindcss";
 
-/* CSS variables (design tokens) */
 :root {
-  /* colors for buttons / UI elements */
-  --accent: #01d182;
+  --accent: #22c55e;
   --box-bg: #4ec0cf;
   --cta-bg: #13b789;
   --cta-hover: #17cfa5;
 }
 
-/* Base styles */
 html {
   scroll-behavior: smooth;
 }

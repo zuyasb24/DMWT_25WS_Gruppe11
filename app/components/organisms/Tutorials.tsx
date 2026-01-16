@@ -80,7 +80,7 @@ const tutorials: Tutorial[] = [
     category: "Laptop",
     youtubeUrl: "https://www.youtube.com/watch?v=7Lakc1_jkuQ",
   },
-  // maybe add more (Tablet, Advanced, etc.), must ask martinez
+  
 ];
 
 type RatingMap = Record<string, { avg: number; count: number }>;

@@ -6,7 +6,7 @@ import Link from "next/link";
 
 type DeviceId = "phone" | "laptop" | "watch";
 
-const green = "#22c55e";
+const accent = "var(--accent)";
 
 const DEVICES: Record<
   DeviceId,
@@ -37,12 +37,10 @@ const DEVICES: Record<
   },
 };
 
-/* --------------------------------------------------
-   Reusable action button (local, intentional reuse)
--------------------------------------------------- */
+/* Reusable action button (local, intentional reuse)*/
 
 const buttonStyle: React.CSSProperties = {
-  backgroundColor: green,
+  backgroundColor: accent,
   borderRadius: 16,
   fontFamily: "Inter, sans-serif",
   fontSize: 18,
@@ -76,9 +74,7 @@ function ActionButton({ href, onClick, children }: ActionButtonProps) {
   );
 }
 
-/* --------------------------------------------------
-   Infographic component
--------------------------------------------------- */
+/* Infographic component */
 
 export default function Infographic() {
   const [active, setActive] = useState<DeviceId>("phone");
@@ -133,7 +129,7 @@ export default function Infographic() {
             className="text-white font-bold leading-snug text-3xl sm:text-4xl lg:text-[46px]"
             style={{ fontFamily: "Inter, sans-serif" }}
           >
-            Your <span style={{ color: green }}>device</span> isn&apos;t trash —
+            Your <span style={{ color: accent }}>device</span> isn&apos;t trash —
             <br />
             it&apos;s misunderstood.
             <br />
@@ -207,7 +203,7 @@ export default function Infographic() {
               type="button"
               onClick={() => setShowOverlay(false)}
               aria-label="Close modal"
-              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-white text-2xl font-bild hover:text-[#22c55e] hover:bg-white/10 transition"
+              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-white text-2xl font-bild hover:text-green-400 hover:bg-white/10 transition"
             >
               ×
             </button>
@@ -219,7 +215,7 @@ export default function Infographic() {
 
                 <p className="text-white/80 mb-8 leading-relaxed text-lg">
                   {current.text.split("fixable!")[0]}
-                  <span style={{ color: green, fontWeight: 700 }}>fixable</span>!
+                  <span style={{ color: accent, fontWeight: 700 }}>fixable</span>!
                 </p>
 
                 <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-6">
@@ -233,7 +229,7 @@ export default function Infographic() {
               <>
                 <h2 className="text-white font-bold mb-4 text-2xl">
                   You can still make a{" "}
-                  <span style={{ color: green, fontWeight: 700 }}>sustainable choice</span>
+                  <span style={{ color: accent, fontWeight: 700 }}>sustainable choice</span>
                 </h2>
 
                 <p className="text-white/80 mb-8 leading-relaxed text-lg">
@@ -243,7 +239,7 @@ export default function Infographic() {
                 </p>
 
                 <div className="flex justify-center mb-6">
-                  <ActionButton href="/legal-notice">Contact us</ActionButton>
+                  <ActionButton href="/contact">Contact us</ActionButton>
                 </div>
               </>
             )}
