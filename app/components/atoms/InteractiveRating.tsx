@@ -1,3 +1,5 @@
+// Interactive star rating component.
+// Allows logged-in users to rate tutorials and updates the average rating via API.
 "use client";
 
 import { Star } from "lucide-react";
@@ -19,6 +21,7 @@ export default function InteractiveRating({
   const [hover, setHover] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Keep local state in sync when fresh rating stats are received from the parent
   useEffect(() => {
   setAvg(initialAvg);
   setCount(initialCount);
@@ -50,6 +53,7 @@ export default function InteractiveRating({
     }
   }
 
+  // Show hovered value while interacting, otherwise show rounded average
   const display = hover ?? Math.round(avg);
 
   return (

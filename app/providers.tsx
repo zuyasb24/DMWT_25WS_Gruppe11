@@ -1,3 +1,5 @@
+// Centralized client-side providers (e.g. NextAuth SessionProvider).
+// Wraps the application with required React context.
 "use client";
 
 import { SessionProvider } from "next-auth/react";
