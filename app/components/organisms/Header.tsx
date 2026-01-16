@@ -31,9 +31,9 @@ export default function Header() {
           </span>
         </Link>
         {/* Navigation + Auth */}
-        <div className="flex items-center gap-6 ml-auto">
+        <div className="flex flex-wrap items-center justify-end gap-3 md:gap-6 ml-auto w-full md:w-auto">
           {/* Navigation Links */}
-          <div className="flex gap-4 md:gap-8">
+          <div className="flex flex-wrap gap-4 md:gap-8">
             <Link href="/#home" className="text-white hover:text-green-400 transition">Home</Link>
             <Link href="/#about" className="text-white hover:text-green-400 transition">About</Link>
             <Link href="/#tutorials" className="text-white hover:text-green-400 transition">Tutorials</Link>
@@ -44,7 +44,7 @@ export default function Header() {
           <div className="flex items-center gap-3">
             {session ? (
               <>
-                <span className="text-gray-200 text-sm">
+                <span className="text-gray-200 text-sm hidden sm:inline">
                   Hi, <span className="text-green-400 font-semibold">{session.user?.name}</span>
                 </span>
                 <button
