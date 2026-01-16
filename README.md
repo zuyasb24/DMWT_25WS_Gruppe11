@@ -31,6 +31,16 @@ The website is designed as a scroll-friendly landing page with multiple sections
 
 ---
 
+## Content Creator Access (Scope Note)
+
+The **Content Creator access** shown on the website is a **planned feature** and is **not implemented** in this prototype.
+
+- The “Request creator access” CTA redirects users to the **Contact page**
+- This is intentional and demonstrates the **conceptual user flow**
+- Full creator workflows were **out of scope** and not part of the assignment requirements
+
+---
+
 ## Tech Stack
 
 - **Framework:** Next.js (App Router)
@@ -44,13 +54,19 @@ The website is designed as a scroll-friendly landing page with multiple sections
 
 ---
 
-## React & Architecture
+## Project Structure & Architecture
 
-- UI is broken down into reusable components following an **atoms → molecules → organisms** structure.
-- **Props** are used for data flow and are never mutated.
-- **State (`useState`)** manages UI behavior (forms, filters, open panels).
-- **State lifting** is applied when multiple components depend on shared data.
-- **Effects (`useEffect`)** are used for side effects such as data fetching.
+The frontend follows a **component-based structure inspired by Atomic Design**:
+
+- **atoms/** – small, reusable UI elements  
+- **molecules/** – combinations of atoms (cards, form elements)  
+- **organisms/** – larger UI sections composed of multiple components  
+  (e.g. Hero, Header, Infographic, Forum, About)
+
+Pages such as **Legal Notice** and **Privacy Policy** are implemented as standalone components but follow the same structural principles.
+
+This structure improves clarity, reusability, and maintainability.
+
 - State updates are immutable and trigger proper re-renders.
 - Responsive styling is implemented using Tailwind utility classes.
 
@@ -65,6 +81,15 @@ The application includes real backend interaction via API route handlers:
 - Persisting all data in a PostgreSQL database
 
 ---
+## Code Documentation
+
+The codebase follows a **clean-code approach**:
+
+- Clear naming and structure are preferred over excessive inline comments  
+- Comments are added only where additional context is needed (e.g. API routes, auth flow)  
+- High-level architecture and design decisions are documented **in this README**
+
+---
 
 ## AI Usage Disclosure
 
@@ -72,6 +97,7 @@ AI tools were used as **support during development**.
 All final decisions, code integration, and verification were performed manually.
 
 ### AI Usage Overview
+All images used in the project (including the hero background and infographic visuals) are **AI-generated** and used solely for illustrative and non-commercial purposes.
 
 | Area | AI Usage | Manual Verification |
 |-----|---------|---------------------|
