@@ -60,39 +60,44 @@ export async function GET(req: Request) {
   }
 }
 
-export async function POST(req: Request) {
-  try {
-    // Require login
-    const { auth } = await import("@/app/lib/auth"); 
-    const session = await auth();
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const { questionId, role, reply } = await req.json();
-
-    const name = String(session.user.name ?? session.user.email ?? "User");
-    const safeRole = role ? String(role) : null;
-    const safeReply = String(reply ?? "").trim();
-    const qid = Number(questionId);
-
-    if (!Number.isFinite(qid) || !safeReply) {
-      return NextResponse.json(
-        { error: "questionId and reply are required." },
-        { status: 400 }
-      );
-    }
-
-    const result = await sql`
-      INSERT INTO forum_replies (question_id, name, role, reply)
-      VALUES (${qid}, ${name}, ${safeRole}, ${safeReply})
-      RETURNING id, question_id, name, role, reply, likes, created_at;
-    `;
-
-    return NextResponse.json(result.rows[0]);
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : "Failed to post reply";
-    return NextResponse.json({ error: msg }, { status: 500 });
-  }
+//DISABLED
+export async function POST() {
+  return new Response("Posting disabled (showcase mode).", { status: 403 });
 }
+
+// export async function POST(req: Request) {
+  // try {
+  //   // Require login
+  //   const { auth } = await import("@/app/lib/auth"); 
+  //   const session = await auth();
+
+  //   if (!session?.user) {
+  //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  //   }
+
+  //   const { questionId, role, reply } = await req.json();
+
+  //   const name = String(session.user.name ?? session.user.email ?? "User");
+  //   const safeRole = role ? String(role) : null;
+  //   const safeReply = String(reply ?? "").trim();
+  //   const qid = Number(questionId);
+
+  //   if (!Number.isFinite(qid) || !safeReply) {
+  //     return NextResponse.json(
+  //       { error: "questionId and reply are required." },
+  //       { status: 400 }
+  //     );
+  //   }
+
+  //   const result = await sql`
+  //     INSERT INTO forum_replies (question_id, name, role, reply)
+  //     VALUES (${qid}, ${name}, ${safeRole}, ${safeReply})
+  //     RETURNING id, question_id, name, role, reply, likes, created_at;
+  //   `;
+
+  //   return NextResponse.json(result.rows[0]);
+  // } catch (error: unknown) {
+  //   const msg = error instanceof Error ? error.message : "Failed to post reply";
+  //   return NextResponse.json({ error: msg }, { status: 500 });
+  // }
+// }

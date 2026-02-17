@@ -29,35 +29,40 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
-  try {
-    //Require login
-    const { auth } = await import("@/app/lib/auth"); // Import auth dynamically to avoid bundling issues in edge/runtime context
-    const session = await auth();
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const { role, question } = await req.json();
-
-    const name = String(session.user.name ?? session.user.email ?? "User");
-    const safeRole = role ? String(role) : null;
-    const safeQuestion = String(question ?? "").trim();
-
-    if (!safeQuestion) {
-      return NextResponse.json({ error: "Question is required." }, { status: 400 });
-    }
-
-    const result = await sql`
-      INSERT INTO forum_questions (name, role, question)
-      VALUES (${name}, ${safeRole}, ${safeQuestion})
-      RETURNING id, name, role, question, likes, created_at;
-    `;
-
-    return NextResponse.json(result.rows[0]);
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : "Failed to post question";
-    return NextResponse.json({ error: msg }, { status: 500 });
-  }
+//DISABLED 
+export async function POST() {
+  return new Response("Posting disabled (showcase mode).", { status: 403 });
 }
+
+// export async function POST(req: Request) {
+  // try {
+    //Require login
+  //   const { auth } = await import("@/app/lib/auth"); // Import auth dynamically to avoid bundling issues in edge/runtime context
+  //   const session = await auth();
+
+  //   if (!session?.user) {
+  //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  //   }
+
+  //   const { role, question } = await req.json();
+
+  //   const name = String(session.user.name ?? session.user.email ?? "User");
+  //   const safeRole = role ? String(role) : null;
+  //   const safeQuestion = String(question ?? "").trim();
+
+  //   if (!safeQuestion) {
+  //     return NextResponse.json({ error: "Question is required." }, { status: 400 });
+  //   }
+
+  //   const result = await sql`
+  //     INSERT INTO forum_questions (name, role, question)
+  //     VALUES (${name}, ${safeRole}, ${safeQuestion})
+  //     RETURNING id, name, role, question, likes, created_at;
+  //   `;
+
+  //   return NextResponse.json(result.rows[0]);
+  // } catch (error: unknown) {
+  //   const msg = error instanceof Error ? error.message : "Failed to post question";
+  //   return NextResponse.json({ error: msg }, { status: 500 });
+  // }
+// }
