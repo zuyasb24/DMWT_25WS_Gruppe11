@@ -116,7 +116,14 @@ export default function LoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            // optional: show a friendly message
+            setError("Login is disabled in this showcase version.");
+          }}
+          className="space-y-4"
+        >
           <input
             type="email"
             placeholder="Email"
@@ -147,15 +154,16 @@ export default function LoginPage() {
           />
 
           <button
-            type="submit"
-            disabled={loading}
-            className="cursor-pointer w-full bg-green-400 hover:bg-green-500 disabled:bg-gray-500 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+            type="button"
+            onClick={() => {
+              setError("Login is disabled in this showcase version.");
+              // optional: show the loading gif for 1s just for visuals
+              setLoading(true);
+              setTimeout(() => setLoading(false), 1000);
+            }}
+            className="cursor-pointer w-full bg-green-400 hover:bg-green-500 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300"
           >
-            {loading
-              ? "Please wait..."
-              : mode === "login"
-              ? "Login"
-              : "Create account"}
+            {mode === "login" ? "Login" : "Create account"}
           </button>
 
           <button
