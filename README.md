@@ -3,6 +3,11 @@
 Green IT Repair is a React + Next.js web application that promotes sustainability, encouraging repair instead of replacement.  
 The project combines storytelling, interactive UI elements, tutorials, and a community forum with real backend interaction.
 
+## Live Demo
+
+The project is deployed and accessible here:  
+👉 https://greenit-rho.vercel.app
+
 ---
 
 ## Overview
