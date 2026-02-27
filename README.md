@@ -123,3 +123,19 @@ All images used in the project (including the hero background and infographic vi
 npm install
 npm run dev
 
+---
+
+## My Contribution
+
+This project was developed as part of a university group assignment.
+
+My primary responsibilities included:
+
+- Overall UI/UX concept and implementation (Tailwind + global styling system)
+- Full-stack development using Next.js
+- Frontend routing and reusable component architecture
+- Responsive design implementation
+- Interactive infographic implementation
+- Backend/API integration with Neon database (authentication, forum, tutorials with rating/like system)
+- State management, debugging, troubleshooting, and deployment
+- Project coordination and technical integration of all components
