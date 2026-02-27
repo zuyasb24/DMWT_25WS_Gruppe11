@@ -116,15 +116,6 @@ All images used in the project (including the hero background and infographic vi
 - Reviewed effects (`useEffect`) dependency arrays and side-effect usage
 
 ---
-
-## Running Locally
-
-```bash
-npm install
-npm run dev
-
----
-
 ## My Contribution
 
 This project was developed as part of a university group assignment.
@@ -139,3 +130,14 @@ My primary responsibilities included:
 - Backend/API integration with Neon database (authentication, forum, tutorials with rating/like system)
 - State management, debugging, troubleshooting, and deployment
 - Project coordination and technical integration of all components
+
+---
+## Running Locally
+
+```bash
+npm install
+npm run dev
+
+---
+
+
